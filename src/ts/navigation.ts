@@ -42,6 +42,7 @@ function toggleMobileMenu(
 
 	if (forceClose) {
 		toggle.classList.remove('nav__toggle--active');
+		toggle.setAttribute('aria-expanded', 'false');
 		mobileMenu?.classList.remove('mobile-menu--active');
 		document.body.style.overflow = '';
 		return;
@@ -51,6 +52,7 @@ function toggleMobileMenu(
 	mobileMenu?.classList.toggle('mobile-menu--active');
 
 	const isOpen = mobileMenu?.classList.contains('mobile-menu--active');
+	toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
 	document.body.style.overflow = isOpen ? 'hidden' : '';
 }
 
@@ -71,9 +73,13 @@ function setupMobileMenu(elements: NavigationElements): void {
 }
 
 export function initNavigation(): void {
-	const elements = getElements();
-	if (!elements) return;
+	try {
+		const elements = getElements();
+		if (!elements) return;
 
-	setupScrollDetection(elements.nav);
-	setupMobileMenu(elements);
+		setupScrollDetection(elements.nav);
+		setupMobileMenu(elements);
+	} catch (error) {
+		console.error('Failed to initialize navigation:', error);
+	}
 }

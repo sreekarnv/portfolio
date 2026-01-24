@@ -72,24 +72,28 @@ function setupVisibilityHandlers(elements: CursorElements): void {
 }
 
 export function initCursor(): void {
-	const elements = getElements();
-	if (!elements) return;
+	try {
+		const elements = getElements();
+		if (!elements) return;
 
-	const state: CursorState = {
-		mouseX: 0,
-		mouseY: 0,
-		cursorX: 0,
-		cursorY: 0,
-		followerX: 0,
-		followerY: 0,
-	};
+		const state: CursorState = {
+			mouseX: 0,
+			mouseY: 0,
+			cursorX: 0,
+			cursorY: 0,
+			followerX: 0,
+			followerY: 0,
+		};
 
-	document.addEventListener('mousemove', (e: MouseEvent) => {
-		state.mouseX = e.clientX;
-		state.mouseY = e.clientY;
-	});
+		document.addEventListener('mousemove', (e: MouseEvent) => {
+			state.mouseX = e.clientX;
+			state.mouseY = e.clientY;
+		});
 
-	animateCursor(elements, state);
-	setupHoverEffects(elements);
-	setupVisibilityHandlers(elements);
+		animateCursor(elements, state);
+		setupHoverEffects(elements);
+		setupVisibilityHandlers(elements);
+	} catch (error) {
+		console.error('Failed to initialize cursor:', error);
+	}
 }

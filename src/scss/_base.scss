@@ -17,6 +17,10 @@ html {
 	scroll-behavior: smooth;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
+
+	@media (prefers-reduced-motion: reduce) {
+		scroll-behavior: auto;
+	}
 }
 
 body {
@@ -40,6 +44,12 @@ video {
 a {
 	color: inherit;
 	text-decoration: none;
+
+	&:focus-visible {
+		outline: 2px solid var(--color-accent);
+		outline-offset: 2px;
+		border-radius: var(--radius-sm);
+	}
 }
 
 button {
@@ -47,4 +57,10 @@ button {
 	cursor: none;
 	border: none;
 	background: none;
+
+	&:focus-visible {
+		outline: 2px solid var(--color-accent);
+		outline-offset: 2px;
+		border-radius: var(--radius-sm);
+	}
 }

@@ -10,8 +10,8 @@ interface Social {
 
 const socials: Social[] = [
   { href: "https://github.com/sreekarnv", label: "GitHub", icon: "mdi:github" },
-  { href: "https://linkedin.com/in/sreekarnutulapati", label: "LinkedIn", icon: "mdi:linkedin" },
-  { href: "mailto:hello@sreekarnutulapati.com", label: "Email", icon: "lucide:mail" },
+  { href: "https://linkedin.com/in/sreekarnv", label: "LinkedIn", icon: "mdi:linkedin" },
+  { href: "mailto:sreekarnv1@gmail.com", label: "Email", icon: "lucide:mail" },
 ];
 ---
 
@@ -65,7 +65,7 @@ const socials: Social[] = [
         <a
           href={social.href}
           target="_blank"
-          rel="noopener"
+          rel="noopener noreferrer"
           class="hero__social"
           aria-label={social.label}
           data-magnetic
@@ -226,6 +226,7 @@ const socials: Social[] = [
       flex-direction: column;
       align-items: center;
       gap: var(--space-md);
+      margin-top: 2rem;
 
       @media (max-width: 768px) {
         display: none;

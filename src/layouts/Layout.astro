@@ -2,16 +2,33 @@
 import "~/scss/main.scss";
 import Cursor from "~/components/ui/Cursor.astro";
 
-
 export interface Props {
   title?: string;
   description?: string;
+  image?: string;
 }
 
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const {
   title = "Sreekar Nutulapati | Full Stack Developer",
   description = "Full Stack Developer specializing in Python, TypeScript, Node.js, and modern web technologies. Building scalable systems and beautiful interfaces.",
+  image = "/og-image.png",
 } = Astro.props;
+
+const ogImageURL = new URL(image, Astro.site);
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: "Sreekar Nutulapati",
+  url: Astro.site?.toString(),
+  jobTitle: "Full Stack Developer",
+  sameAs: [
+    "https://github.com/sreekarnv",
+    "https://linkedin.com/in/sreekarnv",
+  ],
+  knowsAbout: ["Python", "TypeScript", "Node.js", "React", "Web Development"],
+};
 ---
 
 <!doctype html>
@@ -19,14 +36,39 @@ const {
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://web3forms.com" />
+    <link rel="dns-prefetch" href="https://web3forms.com" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
     <link rel="icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={description} />
+    <meta name="author" content="Sreekar Nutulapati" />
+    <meta name="theme-color" content="#6366f1" />
+    <link rel="canonical" href={canonicalURL} />
     <title>{title}</title>
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImageURL} />
+    <meta property="og:site_name" content="Sreekar Nutulapati" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content={canonicalURL} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageURL} />
+    <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
   </head>
   <body>
     <Cursor />
+    <noscript>
+      <div style="padding: 2rem; text-align: center; background: #1a1a1b; color: #e4e4e7;">
+        This website requires JavaScript for full functionality. Please enable JavaScript to continue.
+      </div>
+    </noscript>
     <slot />
     <script>
       import "~/ts/main";
