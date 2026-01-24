@@ -1,0 +1,67 @@
+---
+import Layout from "~/layouts/Layout.astro";
+import Button from "~/components/ui/Button.astro";
+---
+
+<Layout title="404 | Page Not Found" description="The page you're looking for doesn't exist.">
+  <main class="error-page">
+    <div class="error-page__content">
+      <span class="error-page__code">404</span>
+      <h1 class="error-page__title">Page not found</h1>
+      <p class="error-page__description">
+        The page you're looking for doesn't exist or has been moved.
+      </p>
+      <div class="error-page__cta">
+        <Button href="/" variant="primary" icon="lucide:arrow-left">
+          Back to Home
+        </Button>
+      </div>
+    </div>
+  </main>
+</Layout>
+
+<style lang="scss">
+  .error-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-2xl) var(--container-padding);
+    background: var(--color-primary);
+
+    &__content {
+      text-align: center;
+      max-width: 500px;
+    }
+
+    &__code {
+      display: block;
+      font-size: clamp(8rem, 20vw, 12rem);
+      font-weight: 700;
+      line-height: 1;
+      background: var(--gradient-accent);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: var(--space-lg);
+    }
+
+    &__title {
+      font-size: var(--text-3xl);
+      font-weight: 600;
+      color: var(--color-text);
+      margin-bottom: var(--space-md);
+    }
+
+    &__description {
+      font-size: var(--text-lg);
+      color: var(--color-text-secondary);
+      margin-bottom: var(--space-2xl);
+    }
+
+    &__cta {
+      display: flex;
+      justify-content: center;
+    }
+  }
+</style>
