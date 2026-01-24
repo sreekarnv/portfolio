@@ -73,7 +73,9 @@ const structuredData = {
     <script>
       import "~/ts/main";
       import { inject } from "@vercel/analytics";
+      import { injectSpeedInsights } from "@vercel/speed-insights";
       inject();
+      injectSpeedInsights();
     </script>
     <script src="https://web3forms.com/client/script.js" async defer></script>
   </body>
