@@ -72,6 +72,8 @@ const structuredData = {
     <slot />
     <script>
       import "~/ts/main";
+      import { inject } from "@vercel/analytics";
+      inject();
     </script>
     <script src="https://web3forms.com/client/script.js" async defer></script>
   </body>
