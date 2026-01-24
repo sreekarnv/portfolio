@@ -9,7 +9,7 @@ interface Social {
 }
 
 const socials: Social[] = [
-  { href: "https://github.com/sreekar-reddy", label: "GitHub", icon: "mdi:github" },
+  { href: "https://github.com/sreekarnv", label: "GitHub", icon: "mdi:github" },
   { href: "https://linkedin.com/in/sreekarnutulapati", label: "LinkedIn", icon: "mdi:linkedin" },
   { href: "mailto:hello@sreekarnutulapati.com", label: "Email", icon: "lucide:mail" },
 ];
@@ -226,6 +226,10 @@ const socials: Social[] = [
       flex-direction: column;
       align-items: center;
       gap: var(--space-md);
+
+      @media (max-width: 768px) {
+        display: none;
+      }
     }
 
     &__scroll-text {
