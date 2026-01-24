@@ -1,0 +1,317 @@
+---
+import { Icon } from "astro-icon/components";
+import Button from "~/components/ui/Button.astro";
+
+interface Social {
+  href: string;
+  label: string;
+  icon: string;
+}
+
+const socials: Social[] = [
+  { href: "https://github.com/sreekar-reddy", label: "GitHub", icon: "mdi:github" },
+  { href: "https://linkedin.com/in/sreekarnutulapati", label: "LinkedIn", icon: "mdi:linkedin" },
+  { href: "mailto:hello@sreekarnutulapati.com", label: "Email", icon: "lucide:mail" },
+];
+---
+
+<section class="hero" id="hero">
+  <div class="hero__bg">
+    <div class="hero__gradient"></div>
+    <div class="hero__grid"></div>
+    <div class="hero__noise"></div>
+  </div>
+
+  <div class="hero__content">
+    <div class="hero__badge">
+      <span class="hero__badge-dot"></span>
+      <span class="hero__badge-text">Available for opportunities</span>
+    </div>
+
+    <h1 class="hero__title">
+      <span class="hero__title-line">
+        <span class="hero__title-word" data-reveal>Full Stack</span>
+      </span>
+      <span class="hero__title-line">
+        <span class="hero__title-word" data-reveal>Developer</span>
+        <span class="hero__title-accent" data-reveal>.</span>
+      </span>
+    </h1>
+
+    <p class="hero__description" data-reveal>
+      I architect scalable backend systems, craft intuitive interfaces, and
+      bridge the gap between complex infrastructure and elegant user
+      experiences.
+    </p>
+
+    <div class="hero__cta">
+      <Button href="#projects" variant="primary" icon="lucide:arrow-up-right">
+        View My Work
+      </Button>
+      <Button href="#contact" variant="secondary">
+        Get In Touch
+      </Button>
+    </div>
+  </div>
+
+  <div class="hero__scroll">
+    <span class="hero__scroll-text">Scroll to explore</span>
+    <div class="hero__scroll-line"></div>
+  </div>
+
+  <div class="hero__socials">
+    {
+      socials.map((social) => (
+        <a
+          href={social.href}
+          target="_blank"
+          rel="noopener"
+          class="hero__social"
+          aria-label={social.label}
+          data-magnetic
+        >
+          <Icon name={social.icon} size={20} />
+        </a>
+      ))
+    }
+  </div>
+</section>
+
+<style lang="scss">
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-5xl) var(--container-padding);
+    overflow: hidden;
+
+    &__bg {
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+    }
+
+    &__gradient {
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(
+          ellipse at 20% 20%,
+          rgba(99, 102, 241, 0.15) 0%,
+          transparent 50%
+        ),
+        radial-gradient(
+          ellipse at 80% 80%,
+          rgba(168, 85, 247, 0.1) 0%,
+          transparent 50%
+        ),
+        radial-gradient(
+          ellipse at 50% 50%,
+          rgba(34, 211, 238, 0.05) 0%,
+          transparent 60%
+        );
+      animation: gradient-rotate 20s linear infinite;
+    }
+
+    &__grid {
+      position: absolute;
+      inset: 0;
+      background-image: linear-gradient(
+          rgba(255, 255, 255, 0.02) 1px,
+          transparent 1px
+        ),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse at center, black 0%, transparent 70%);
+    }
+
+    &__noise {
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+      opacity: 0.03;
+      pointer-events: none;
+    }
+
+    &__content {
+      text-align: center;
+      max-width: 1000px;
+    }
+
+    &__badge {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-sm);
+      padding: var(--space-sm) var(--space-lg);
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-full);
+      margin-bottom: var(--space-2xl);
+    }
+
+    &__badge-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--color-green);
+      border-radius: 50%;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    &__badge-text {
+      font-size: var(--text-sm);
+      color: var(--color-text-secondary);
+    }
+
+    &__title {
+      font-size: var(--text-6xl);
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      margin-bottom: var(--space-xl);
+    }
+
+    &__title-line {
+      display: block;
+      overflow: hidden;
+      padding-bottom: 0.1em;
+    }
+
+    &__title-word {
+      display: inline-block;
+    }
+
+    &__title-accent {
+      display: inline-block;
+      background: var(--gradient-accent);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-left: var(--space-sm);
+    }
+
+    &__description {
+      font-size: var(--text-lg);
+      color: var(--color-text-secondary);
+      max-width: 600px;
+      margin: 0 auto var(--space-2xl);
+    }
+
+    &__cta {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-lg);
+      flex-wrap: wrap;
+
+      @media (max-width: 500px) {
+        flex-direction: column;
+        width: 100%;
+
+        :global(.btn) {
+          width: 100%;
+        }
+      }
+    }
+
+    &__scroll {
+      position: absolute;
+      bottom: var(--space-3xl);
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-md);
+    }
+
+    &__scroll-text {
+      font-size: var(--text-xs);
+      color: var(--color-text-secondary);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+
+    &__scroll-line {
+      width: 1px;
+      height: 50px;
+      background: linear-gradient(
+        to bottom,
+        var(--color-accent) 0%,
+        transparent 100%
+      );
+      animation: scroll-line 2s ease-in-out infinite;
+    }
+
+    &__socials {
+      position: absolute;
+      left: var(--container-padding);
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-lg);
+
+      @media (max-width: 1024px) {
+        display: none;
+      }
+    }
+
+    &__social {
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-text-muted);
+      transition: color var(--duration-fast) ease;
+
+      &:hover {
+        color: var(--color-text);
+      }
+    }
+  }
+
+  @keyframes gradient-rotate {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes pulse {
+    0%,
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.5;
+      transform: scale(1.2);
+    }
+  }
+
+  @keyframes scroll-line {
+    0% {
+      transform: scaleY(0);
+      transform-origin: top;
+    }
+    50% {
+      transform: scaleY(1);
+      transform-origin: top;
+    }
+    50.1% {
+      transform-origin: bottom;
+    }
+    100% {
+      transform: scaleY(0);
+      transform-origin: bottom;
+    }
+  }
+</style>

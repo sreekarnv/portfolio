@@ -1,13 +1,11 @@
 {
-  "extends": "astro/tsconfigs/strict",
-  "compilerOptions": {
-    "jsx": "preserve",
-    "jsxImportSource": "solid-js",
-    "baseUrl": ".",
-    "strictNullChecks": true,
-    "paths": {
-      "@/*": ["src/*"]
-    },
-    "types": ["@astrojs/image/client"]
-  }
+	"extends": "astro/tsconfigs/strict",
+	"include": [".astro/types.d.ts", "**/*"],
+	"exclude": ["dist"],
+	"compilerOptions": {
+		"baseUrl": ".",
+		"paths": {
+			"~/*": ["src/*"]
+		}
+	}
 }

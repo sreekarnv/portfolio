@@ -1,0 +1,75 @@
+---
+const menuLinks = [
+  { href: "#about", label: "About" },
+  { href: "#experience", label: "Experience" },
+  { href: "#projects", label: "Projects" },
+  { href: "#services", label: "Services" },
+  { href: "#contact", label: "Contact" },
+];
+---
+
+<div class="mobile-menu" id="mobile-menu">
+  <div class="mobile-menu__content">
+    {
+      menuLinks.map((link, index) => (
+        <a
+          href={link.href}
+          class="mobile-menu__link"
+          style={`transition-delay: ${index * 0.05}s`}
+        >
+          {link.label}
+        </a>
+      ))
+    }
+  </div>
+</div>
+
+<style lang="scss">
+  .mobile-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--color-primary);
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: all var(--duration-slow) var(--ease-out-expo);
+
+    &--active {
+      opacity: 1;
+      visibility: visible;
+
+      .mobile-menu__link {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    &__content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-xl);
+    }
+
+    &__link {
+      font-size: var(--text-3xl);
+      font-weight: 600;
+      opacity: 0;
+      transform: translateY(20px);
+      transition:
+        opacity var(--duration-normal) ease,
+        transform var(--duration-normal) ease,
+        color var(--duration-fast) ease;
+
+      &:hover {
+        color: var(--color-accent);
+      }
+    }
+  }
+</style>

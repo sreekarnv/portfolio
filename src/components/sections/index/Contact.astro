@@ -1,0 +1,276 @@
+---
+import { Icon } from "astro-icon/components";
+import Button from "~/components/ui/Button.astro";
+
+interface ContactLink {
+  href: string;
+  icon: string;
+  label: string;
+}
+
+const contactLinks: ContactLink[] = [
+  {
+    href: "mailto:hello@sreekarnutulapati.com",
+    icon: "lucide:mail",
+    label: "hello@sreekarnutulapati.com",
+  },
+  {
+    href: "tel:+919849567173",
+    icon: "lucide:phone",
+    label: "+91 98495 67173",
+  },
+  {
+    href: "https://linkedin.com/in/sreekarnutulapati",
+    icon: "mdi:linkedin",
+    label: "linkedin.com/in/sreekarnutulapati",
+  },
+];
+
+const serviceOptions = [
+  { value: "fullstack", label: "Full Stack Development" },
+  { value: "backend", label: "Backend & API" },
+  { value: "other", label: "Other" },
+];
+
+const WEB3FORMS_ACCESS_KEY = import.meta.env.PUBLIC_WEB3FORMS_ACCESS_KEY;
+---
+
+<section class="contact" id="contact">
+  <div class="contact__container">
+    <div class="contact__content">
+      <div class="contact__text">
+        <span class="contact__tag" data-reveal>05</span>
+        <h2 class="contact__title" data-reveal>Let's Build Something Amazing</h2>
+        <p class="contact__description" data-reveal>
+          Have a project in mind or want to discuss opportunities? I'm always
+          open to new challenges and collaborations.
+        </p>
+
+        <div class="contact__info" data-reveal>
+          {
+            contactLinks.map((link) => (
+              <a
+                href={link.href}
+                class="contact__link"
+                target={link.href.startsWith("http") ? "_blank" : undefined}
+                rel={link.href.startsWith("http") ? "noopener" : undefined}
+              >
+                <Icon name={link.icon} size={24} />
+                <span>{link.label}</span>
+              </a>
+            ))
+          }
+        </div>
+      </div>
+
+      <form
+        class="contact__form"
+        id="contact-form"
+        action="https://api.web3forms.com/submit"
+        method="POST"
+        data-reveal
+      >
+        <input
+          type="hidden"
+          name="access_key"
+          value={WEB3FORMS_ACCESS_KEY}
+        />
+        <input type="hidden" name="subject" value="New Portfolio Contact" />
+        <input type="hidden" name="from_name" value="Portfolio Contact Form" />
+        <input
+          type="hidden"
+          name="redirect"
+          value="https://web3forms.com/success"
+        />
+        <input type="checkbox" name="botcheck" class="hidden" />
+
+        <div class="contact__form-group">
+          <input type="text" id="name" name="name" required placeholder=" " />
+          <label for="name">Your Name</label>
+        </div>
+        <div class="contact__form-group">
+          <input
+            type="email"
+            id="email"
+            name="email"
+            required
+            placeholder=" "
+          />
+          <label for="email">Your Email</label>
+        </div>
+        <div class="contact__form-group">
+          <select id="service" name="service" required>
+            <option value="" disabled selected></option>
+            {
+              serviceOptions.map((option) => (
+                <option value={option.value}>{option.label}</option>
+              ))
+            }
+          </select>
+          <label for="service">Service Interested In</label>
+        </div>
+        <div class="contact__form-group">
+          <textarea id="message" name="message" rows="4" required placeholder=" "
+          ></textarea>
+          <label for="message">Your Message</label>
+        </div>
+        <div class="h-captcha" data-captcha="true"></div>
+        <Button variant="primary" icon="lucide:send" class="contact__submit">
+          Send Message
+        </Button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<style lang="scss">
+  .contact {
+    padding: var(--space-5xl) 0;
+    background: var(--color-secondary);
+
+    &__container {
+      width: 100%;
+      max-width: var(--container-max);
+      margin: 0 auto;
+      padding: 0 var(--container-padding);
+    }
+
+    &__content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-4xl);
+      align-items: start;
+
+      @media (max-width: 968px) {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    &__tag {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: var(--text-sm);
+      color: var(--color-accent);
+      margin-bottom: var(--space-md);
+    }
+
+    &__title {
+      font-size: var(--text-3xl);
+      font-weight: 700;
+      margin-bottom: var(--space-lg);
+    }
+
+    &__description {
+      color: var(--color-text-secondary);
+      font-size: var(--text-lg);
+      margin-bottom: var(--space-2xl);
+    }
+
+    &__info {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-lg);
+    }
+
+    &__link {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+      color: var(--color-text-secondary);
+      transition: color var(--duration-fast) ease;
+
+      &:hover {
+        color: var(--color-accent);
+      }
+    }
+
+    &__form {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-xl);
+      padding: var(--space-2xl);
+    }
+
+    &__form-group {
+      position: relative;
+      margin-bottom: var(--space-lg);
+
+      input,
+      textarea,
+      select {
+        width: 100%;
+        padding: var(--space-md);
+        background: var(--color-secondary);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-md);
+        color: var(--color-text);
+        font-size: var(--text-base);
+        font-family: inherit;
+        transition: all var(--duration-fast) ease;
+
+        &:focus {
+          outline: none;
+          border-color: var(--color-accent);
+          box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+      }
+
+      label {
+        position: absolute;
+        left: var(--space-md);
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--color-text-muted);
+        pointer-events: none;
+        transition: all var(--duration-fast) ease;
+        background: var(--color-secondary);
+        padding: 0 var(--space-xs);
+      }
+
+      textarea ~ label {
+        top: var(--space-md);
+        transform: translateY(0);
+      }
+
+      select ~ label {
+        top: -8px;
+        font-size: var(--text-xs);
+        color: var(--color-accent);
+      }
+
+      input:focus ~ label,
+      input:not(:placeholder-shown) ~ label,
+      textarea:focus ~ label,
+      textarea:not(:placeholder-shown) ~ label {
+        top: -8px;
+        font-size: var(--text-xs);
+        color: var(--color-accent);
+      }
+
+      select {
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%2371717a' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right var(--space-md) center;
+        padding-right: var(--space-2xl);
+
+        option {
+          background: var(--color-surface);
+          color: var(--color-text);
+        }
+      }
+    }
+
+    &__submit {
+      width: 100%;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .h-captcha {
+      margin-bottom: var(--space-lg);
+    }
+  }
+</style>

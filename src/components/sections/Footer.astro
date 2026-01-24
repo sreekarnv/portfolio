@@ -1,0 +1,105 @@
+---
+const currentYear = new Date().getFullYear();
+
+const footerLinks = [
+  { href: "https://github.com/sreekarnv", label: "GitHub" },
+  { href: "https://linkedin.com/in/sreekarnv", label: "LinkedIn" },
+  { href: "mailto:sreekarnv1@gmail.com", label: "Email" },
+];
+---
+
+<footer class="footer">
+  <div class="footer__container">
+    <div class="footer__content">
+      <div class="footer__brand">
+        <span class="footer__logo">SN</span>
+        <p class="footer__tagline">Building the future, one line at a time.</p>
+      </div>
+      <nav class="footer__links">
+        {
+          footerLinks.map((link) => (
+            <a
+              href={link.href}
+              target={link.href.startsWith("http") ? "_blank" : undefined}
+              rel={link.href.startsWith("http") ? "noopener" : undefined}
+            >
+              {link.label}
+            </a>
+          ))
+        }
+      </nav>
+    </div>
+    <div class="footer__bottom">
+      <p>&copy; {currentYear} Sreekar Nutulapati. Crafted with passion.</p>
+    </div>
+  </div>
+</footer>
+
+<style lang="scss">
+  .footer {
+    background: var(--color-primary);
+    padding: var(--space-3xl) 0;
+    border-top: 1px solid var(--color-border);
+
+    &__container {
+      width: 100%;
+      max-width: var(--container-max);
+      margin: 0 auto;
+      padding: 0 var(--container-padding);
+    }
+
+    &__content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--space-xl);
+
+      @media (max-width: 768px) {
+        flex-direction: column;
+        gap: var(--space-xl);
+        text-align: center;
+      }
+    }
+
+    &__logo {
+      font-size: var(--text-2xl);
+      font-weight: 700;
+      background: var(--gradient-accent);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    &__tagline {
+      color: var(--color-text-muted);
+      font-size: var(--text-sm);
+      margin-top: var(--space-sm);
+    }
+
+    &__links {
+      display: flex;
+      gap: var(--space-xl);
+
+      a {
+        color: var(--color-text-secondary);
+        font-size: var(--text-sm);
+        transition: color var(--duration-fast) ease;
+
+        &:hover {
+          color: var(--color-accent);
+        }
+      }
+    }
+
+    &__bottom {
+      text-align: center;
+      padding-top: var(--space-xl);
+      border-top: 1px solid var(--color-border);
+
+      p {
+        color: var(--color-text-muted);
+        font-size: var(--text-sm);
+      }
+    }
+  }
+</style>

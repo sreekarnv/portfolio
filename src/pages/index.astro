@@ -1,140 +1,26 @@
 ---
-import Button from '../components/shared/button';
-import DefaultLayout from '../layouts/default/default.layout.astro';
+import Footer from "~/components/sections/Footer.astro";
+import About from "~/components/sections/index/About.astro";
+import Contact from "~/components/sections/index/Contact.astro";
+import Experience from "~/components/sections/index/Experience.astro";
+import Hero from "~/components/sections/index/Hero.astro";
+import Projects from "~/components/sections/index/Projects.astro";
+import Services from "~/components/sections/index/Services.astro";
+import MobileMenu from "~/components/sections/MobileMenu.astro";
+import Navigation from "~/components/sections/Navigation.astro";
+import Layout from "~/layouts/Layout.astro";
 ---
 
-<DefaultLayout>
-  <section class="home">
-    <div>
-      <h4 class="home__wave">Hi there 👋,</h4>
-      <h3 class="home__name">I&apos;m a Full Stack Web & App Developer</h3>
-      <p class="home__description">
-        Currently a student at Birla Institute of Technology and Science,
-        Pilani. I am a self taught developer and I develop exceptional websites
-        and web applications that provide intuitive, pixel-perfect user
-        interfaces with efficient and modern backends.
-      </p>
-
-      <nav class="home__action">
-        <a href="/about" class="home__action__link">
-          <Button
-            size="large"
-            variant="primary-outline"
-            class="home__action__btn"
-          >
-            About Me
-          </Button>
-        </a>
-
-        <a href="/work" class="home__action__link">
-          <Button size="large" variant="secondary" class="home__action__btn">
-            My Work
-          </Button>
-        </a>
-      </nav>
-    </div>
-  </section>
-</DefaultLayout>
-
-<style lang="scss" scoped>
-  @use '../scss/variables/main.scss' as variables;
-  @use '../scss/mixins/main.scss' as mixins;
-
-  .home {
-    padding: 5rem 10rem;
-
-    @include mixins.respond(tab-land) {
-      padding: 3rem;
-    }
-
-    @include mixins.respond(phone-lg) {
-      padding: 3rem 2rem;
-    }
-  }
-
-  .home__wave {
-    font-size: 7rem;
-    max-width: 90rem;
-    margin: auto;
-    margin-bottom: 3rem;
-    font-weight: variables.$fw-medium;
-    color: variables.$color-gray-dark;
-    text-align: center;
-
-    @include mixins.respond(laptop-lg) {
-      font-size: 5rem;
-    }
-
-    @include mixins.respond(tab-land) {
-      font-size: 4rem;
-      text-align: left;
-    }
-
-    @include mixins.respond(phone-lg) {
-      font-size: 3.25rem;
-    }
-  }
-
-  .home__name {
-    font-size: 8rem;
-    font-weight: variables.$fw-extra-bold;
-    line-height: 1.2;
-    text-align: center;
-    color: variables.$color-secondary;
-    max-width: 140rem;
-    margin: auto;
-    margin-bottom: 2rem;
-
-    @include mixins.respond(laptop-lg) {
-      font-size: 6.5rem;
-    }
-
-    @include mixins.respond(tab-land) {
-      font-size: 5rem;
-      text-align: left;
-    }
-
-    @include mixins.respond(phone-lg) {
-      font-size: 4.5rem;
-    }
-  }
-
-  .home__description {
-    font-size: 2rem;
-    font-weight: variables.$fw-normal;
-    line-height: 1.5;
-    color: variables.$color-gray-light;
-    margin: auto;
-    margin-bottom: 4rem;
-    text-align: center;
-    max-width: 90rem;
-
-    @include mixins.respond(tab-land) {
-      font-size: 1.8rem;
-      text-align: left;
-    }
-
-    @include mixins.respond(phone-lg) {
-      font-size: 1.75rem;
-    }
-  }
-
-  .home__action {
-    display: flex;
-    align-items: center;
-    gap: 2rem;
-    justify-content: center;
-
-    @include mixins.respond(phone-lg) {
-      flex-direction: column;
-      align-items: flex-start;
-    }
-  }
-
-  .home__action__link,
-  .home__action__btn {
-    @include mixins.respond(phone-lg) {
-      width: 100%;
-    }
-  }
-</style>
+<Layout>
+  <Navigation />
+  <MobileMenu />
+  <main>
+    <Hero />
+    <About />
+    <Experience />
+    <Projects />
+    <Services />
+    <Contact />
+  </main>
+  <Footer />
+</Layout>

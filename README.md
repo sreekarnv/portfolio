@@ -1,32 +1,43 @@
-![](public/og-image.png)
+# Astro Starter Kit: Minimal
 
-# Overview
+```sh
+bun create astro@latest -- --template minimal
+```
 
-This is my offical portfolio website built with Astro and SolidJS. [Click Here to view my previous version build with Next JS.](https://github.com/sreekarnv/sreekarnutulapati.vercel.app/tree/v1-with-nextjs)
+> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
 
-# Getting Started
+## 🚀 Project Structure
 
-You need to have node and yarn installed on your computer.
+Inside of your Astro project, you'll see the following folders and files:
 
-    # Clone the repository
-    git clone https://github.com/sreekarnv/sreekarnutulapati.vercel.app.git
+```text
+/
+├── public/
+├── src/
+│   └── pages/
+│       └── index.astro
+└── package.json
+```
 
-    # Install yarn globally
-    npm i -g yarn
+Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
 
-    # Install dependencies
-    yarn
+There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
 
-    # Run development server
-    yarn dev
+Any static assets, like images, can be placed in the `public/` directory.
 
-# PageSpeed Insights
+## 🧞 Commands
 
-| [Home](https://pagespeed.web.dev/report?url=https%3A%2F%2Fsreekarnutulapati.vercel.app&form_factor=desktop) | [About](https://pagespeed.web.dev/report?url=https%3A%2F%2Fsreekarnutulapati.vercel.app%2Fabout&form_factor=desktop) |
-| :---------------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------------: |
-|                                            ![](assets/home.png)                                             |                                                ![](assets/about.png)                                                 |
+All commands are run from the root of the project, from a terminal:
 
-| [Work](https://pagespeed.web.dev/report?url=https%3A%2F%2Fsreekarnutulapati.vercel.app%2Fwork&form_factor=desktop) | [Contact](https://pagespeed.web.dev/report?url=https%3A%2F%2Fsreekarnutulapati.vercel.app%2Fcontact&form_factor=desktop) |
-| :----------------------------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------------------------------: |
-|                                                ![](assets/work.png)                                                |                                                 ![](assets/contact.png)                                                  |
-|                                                                                                                    |
+| Command                   | Action                                           |
+| :------------------------ | :----------------------------------------------- |
+| `bun install`             | Installs dependencies                            |
+| `bun dev`             | Starts local dev server at `localhost:4321`      |
+| `bun build`           | Build your production site to `./dist/`          |
+| `bun preview`         | Preview your build locally, before deploying     |
+| `bun astro ...`       | Run CLI commands like `astro add`, `astro check` |
+| `bun astro -- --help` | Get help using the Astro CLI                     |
+
+## 👀 Want to learn more?
+
+Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
