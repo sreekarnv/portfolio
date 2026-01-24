@@ -2,6 +2,8 @@
 
 Personal portfolio built with Astro.
 
+![Portfolio Preview](assets/home.jpg)
+
 ## Tech Stack
 
 - **Framework:** Astro
