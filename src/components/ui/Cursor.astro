@@ -1,0 +1,59 @@
+<div class="cursor" id="cursor"></div>
+<div class="cursor__follower" id="cursor-follower"></div>
+
+<style lang="scss">
+  .cursor {
+    position: fixed;
+    width: 8px;
+    height: 8px;
+    background: var(--color-text);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 10000;
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s ease, opacity 0.2s ease;
+    mix-blend-mode: difference;
+
+    &--hover {
+      transform: translate(-50%, -50%) scale(0);
+    }
+  }
+
+  .cursor__follower {
+    position: fixed;
+    width: 40px;
+    height: 40px;
+    border: 1px solid var(--color-text);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition:
+      transform 0.15s ease,
+      width 0.3s ease,
+      height 0.3s ease,
+      border-color 0.3s ease;
+    opacity: 0.5;
+
+    &--hover {
+      width: 60px;
+      height: 60px;
+      border-color: var(--color-accent);
+      opacity: 1;
+    }
+
+    &--magnetic {
+      width: 80px;
+      height: 80px;
+      border-color: var(--color-accent);
+      opacity: 0.8;
+    }
+  }
+
+  @media (hover: none) and (pointer: coarse) {
+    .cursor,
+    .cursor__follower {
+      display: none !important;
+    }
+  }
+</style>

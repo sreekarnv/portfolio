@@ -1,0 +1,323 @@
+---
+import { Icon } from "astro-icon/components";
+import Button from "~/components/ui/Button.astro";
+
+interface Project {
+  title: string;
+  subtitle: string;
+  description: string;
+  tech: { name: string; color: string }[];
+  github: string;
+  image?: string;
+  gradient: string;
+  featured?: boolean;
+}
+
+const projects: Project[] = [
+  {
+    title: "Mint",
+    subtitle: "Event-Driven Wallet Microservices",
+    description:
+      "Production-grade microservices wallet system with asynchronous event-driven communication. Features 4 independent services (Auth, Wallet, Transactions, Notifications), API Gateway with NGINX, and comprehensive distributed tracing.",
+    tech: [
+      { name: "Node", color: "#8CC84B" },
+      { name: "TS", color: "#3178C6" },
+      { name: "RabbitMQ", color: "#FF6600" },
+      { name: "Docker", color: "#2196F3" },
+    ],
+    github: "https://github.com/sreekar-reddy/mint",
+    gradient:
+      "radial-gradient(circle at 30% 70%, rgba(34, 197, 94, 0.25) 0%, transparent 50%), radial-gradient(circle at 70% 30%, rgba(99, 102, 241, 0.2) 0%, transparent 50%)",
+    featured: true,
+  },
+  {
+    title: "Rewind",
+    subtitle: "Real-Time Network Traffic Analyzer",
+    description:
+      "Multi-tier system with C++ packet capture agent, WebSocket real-time streaming, and rule-based alerting with email notifications.",
+    tech: [
+      { name: "C++", color: "#659BD3" },
+      { name: "Svelte", color: "#FF3E00" },
+    ],
+    github: "https://github.com/sreekar-reddy/rewind",
+    gradient:
+      "radial-gradient(circle at 30% 70%, rgba(34, 211, 238, 0.25) 0%, transparent 50%), radial-gradient(circle at 70% 30%, rgba(168, 85, 247, 0.2) 0%, transparent 50%)",
+  },
+  {
+    title: "FastAuth",
+    subtitle: "Authentication Framework",
+    description:
+      "Production-ready auth framework with OAuth2-compliant JWT, RBAC, email verification, and database-agnostic design.",
+    tech: [
+      { name: "Python", color: "#FFD43B" },
+      { name: "FastAPI", color: "#009688" },
+    ],
+    github: "https://github.com/sreekar-reddy/fastauth",
+    gradient:
+      "radial-gradient(circle at 30% 70%, rgba(59, 130, 246, 0.25) 0%, transparent 50%), radial-gradient(circle at 70% 30%, rgba(16, 185, 129, 0.2) 0%, transparent 50%)",
+  },
+  {
+    title: "Burger House",
+    subtitle: "E-Commerce Platform",
+    description:
+      "Full-stack e-commerce with type-safe RPC APIs, SSR, cart management, and payment integration.",
+    tech: [
+      { name: "Next.js", color: "#ffffff" },
+      { name: "tRPC", color: "#3178C6" },
+    ],
+    github: "https://github.com/sreekar-reddy/burger-house",
+    gradient:
+      "radial-gradient(circle at 30% 70%, rgba(249, 115, 22, 0.25) 0%, transparent 50%), radial-gradient(circle at 70% 30%, rgba(236, 72, 153, 0.2) 0%, transparent 50%)",
+  },
+];
+---
+
+<section class="projects" id="projects">
+  <div class="projects__container">
+    <header class="projects__header">
+      <span class="projects__tag" data-reveal>03</span>
+      <h2 class="projects__title" data-reveal>Featured Projects</h2>
+    </header>
+
+    <div class="projects__grid">
+      {
+        projects.map((project) => (
+          <article
+            class:list={[
+              "projects__card",
+              { "projects__card--featured": project.featured },
+            ]}
+            data-reveal
+          >
+            <div
+              class="projects__image"
+              style={`--project-gradient: ${project.gradient}`}
+            >
+              <div class="projects__badges">
+                {project.tech.map((t) => (
+                  <span
+                    class="projects__badge"
+                    style={`--badge-color: ${t.color}`}
+                  >
+                    {t.name}
+                  </span>
+                ))}
+              </div>
+            </div>
+            <div class="projects__content">
+              <h3 class="projects__card-title">{project.title}</h3>
+              <p class="projects__subtitle">{project.subtitle}</p>
+              <p class="projects__description">{project.description}</p>
+              <div class="projects__links">
+                <a
+                  href={project.github}
+                  target="_blank"
+                  rel="noopener"
+                  class="projects__link"
+                  data-magnetic
+                >
+                  <span>View on GitHub</span>
+                  <Icon name="lucide:arrow-up-right" size={16} />
+                </a>
+              </div>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+
+    <div class="projects__cta" data-reveal>
+      <Button
+        href="https://github.com/sreekar-reddy"
+        variant="outline"
+        icon="lucide:arrow-up-right"
+      >
+        View All Projects on GitHub
+      </Button>
+    </div>
+  </div>
+</section>
+
+<style lang="scss">
+  .projects {
+    padding: var(--space-5xl) 0;
+    background: var(--color-secondary);
+
+    &__container {
+      width: 100%;
+      max-width: var(--container-max);
+      margin: 0 auto;
+      padding: 0 var(--container-padding);
+    }
+
+    &__header {
+      margin-bottom: var(--space-4xl);
+    }
+
+    &__tag {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: var(--text-sm);
+      color: var(--color-accent);
+      margin-bottom: var(--space-md);
+    }
+
+    &__title {
+      font-size: var(--text-4xl);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    &__grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-xl);
+
+      @media (max-width: 968px) {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    &__card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      transition: all var(--duration-slow) var(--ease-out-quart);
+
+      &:hover {
+        border-color: var(--color-border-hover);
+        transform: translateY(-5px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+
+        .projects__image::before {
+          opacity: 0.4;
+        }
+
+        .projects__badge {
+          transform: translateY(-2px);
+        }
+      }
+
+      &--featured {
+        grid-column: span 2;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+
+        @media (max-width: 968px) {
+          grid-column: span 1;
+          grid-template-columns: 1fr;
+        }
+
+        .projects__image {
+          aspect-ratio: auto;
+          min-height: 300px;
+        }
+      }
+    }
+
+    &__image {
+      aspect-ratio: 16/10;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      padding-bottom: var(--space-lg);
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(
+        135deg,
+        var(--color-tertiary) 0%,
+        var(--color-surface) 100%
+      );
+
+      &::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: var(--project-gradient),
+          linear-gradient(to top, var(--color-surface) 0%, transparent 50%);
+        opacity: 0.8;
+        transition: opacity var(--duration-slow) var(--ease-out-quart);
+      }
+    }
+
+    &__badges {
+      display: flex;
+      gap: var(--space-sm);
+      flex-wrap: wrap;
+      justify-content: center;
+      padding: 0 var(--space-md);
+      position: relative;
+      z-index: 2;
+    }
+
+    &__badge {
+      padding: var(--space-xs) var(--space-sm);
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border-radius: var(--radius-sm);
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--badge-color, var(--color-text-secondary));
+      transition: all var(--duration-fast) ease;
+    }
+
+    &__content {
+      padding: var(--space-xl);
+    }
+
+    &__card-title {
+      font-size: var(--text-2xl);
+      font-weight: 600;
+      margin-bottom: var(--space-xs);
+    }
+
+    &__subtitle {
+      font-size: var(--text-sm);
+      color: var(--color-accent-light);
+      margin-bottom: var(--space-md);
+    }
+
+    &__description {
+      color: var(--color-text-secondary);
+      font-size: var(--text-sm);
+      margin-bottom: var(--space-lg);
+    }
+
+    &__links {
+      display: flex;
+      gap: var(--space-md);
+    }
+
+    &__link {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-sm);
+      font-size: var(--text-sm);
+      font-weight: 500;
+      color: var(--color-text);
+      transition: color var(--duration-fast) ease;
+
+      &:hover {
+        color: var(--color-accent);
+
+        svg {
+          transform: translate(2px, -2px);
+        }
+      }
+
+      svg {
+        transition: transform var(--duration-fast) ease;
+      }
+    }
+
+    &__cta {
+      display: flex;
+      justify-content: center;
+      margin-top: var(--space-3xl);
+    }
+  }
+</style>

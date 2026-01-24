@@ -1,0 +1,188 @@
+---
+interface SkillCategory {
+  title: string;
+  skills: string[];
+}
+
+const skillCategories: SkillCategory[] = [
+  {
+    title: "Languages",
+    skills: ["Python", "TypeScript", "JavaScript", "C++", "SQL", "Bash"],
+  },
+  {
+    title: "Backend",
+    skills: ["Node.js", "Express", "FastAPI", "REST APIs", "Microservices"],
+  },
+  {
+    title: "Frontend",
+    skills: ["React", "Next.js", "SvelteKit", "Vue.js"],
+  },
+  {
+    title: "DevOps & Tools",
+    skills: ["Docker", "Jenkins", "GitLab CI/CD", "NGINX", "Linux"],
+  },
+  {
+    title: "Databases",
+    skills: ["MongoDB", "PostgreSQL", "Redis", "RabbitMQ"],
+  },
+];
+---
+
+<section class="about" id="about">
+  <div class="about__container">
+    <header class="about__header">
+      <span class="about__tag" data-reveal>01</span>
+      <h2 class="about__title" data-reveal>About Me</h2>
+    </header>
+
+    <div class="about__content">
+      <div class="about__text">
+        <p class="about__intro" data-reveal>
+          It started with curiosity — <span class="about__highlight"
+            >how do things work under the hood?</span
+          >
+        </p>
+        <p data-reveal>
+          That question led me from tinkering with code at BITS Pilani to
+          building real-time analytics dashboards at CleverTap, and eventually
+          to engineering protocol-level testing systems at KPIT Technologies.
+          Along the way, I discovered I love the entire stack — from the
+          elegance of a well-designed API to the satisfaction of a pixel-perfect
+          interface.
+        </p>
+        <p data-reveal>
+          Today, I build with Python, TypeScript, React, Node.js, and whatever
+          else the problem demands. Currently, I'm working on <span
+            class="about__highlight">FastAuth</span
+          > — a production-ready authentication framework for FastAPI. I've shipped
+          microservices, automated testing pipelines, and crafted interfaces that
+          users actually enjoy.
+        </p>
+        <p data-reveal>
+          Now I'm looking for my next chapter — a team that values craft, a
+          problem worth solving, and the space to do meaningful work.
+        </p>
+      </div>
+
+      <div class="about__skills">
+        <h3 class="about__skills-title" data-reveal>Tech Arsenal</h3>
+        <div class="about__skills-grid">
+          {
+            skillCategories.map((category) => (
+              <div class="about__skill-category" data-reveal>
+                <h4>{category.title}</h4>
+                <div class="about__skill-tags">
+                  {category.skills.map((skill) => (
+                    <span class="about__skill-tag">{skill}</span>
+                  ))}
+                </div>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style lang="scss">
+  .about {
+    padding: var(--space-5xl) 0;
+    background: var(--color-secondary);
+
+    &__container {
+      width: 100%;
+      max-width: var(--container-max);
+      margin: 0 auto;
+      padding: 0 var(--container-padding);
+    }
+
+    &__header {
+      margin-bottom: var(--space-4xl);
+    }
+
+    &__tag {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: var(--text-sm);
+      color: var(--color-accent);
+      margin-bottom: var(--space-md);
+    }
+
+    &__title {
+      font-size: var(--text-4xl);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    &__content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-4xl);
+
+      @media (max-width: 968px) {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    &__intro {
+      font-size: var(--text-xl);
+      line-height: 1.6;
+      margin-bottom: var(--space-lg);
+    }
+
+    &__text p {
+      color: var(--color-text-secondary);
+      margin-bottom: var(--space-lg);
+    }
+
+    &__highlight {
+      color: var(--color-accent-light);
+      font-weight: 500;
+    }
+
+    &__skills-title {
+      font-size: var(--text-xl);
+      font-weight: 600;
+      margin-bottom: var(--space-xl);
+    }
+
+    &__skills-grid {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-xl);
+    }
+
+    &__skill-category {
+      h4 {
+        font-size: var(--text-sm);
+        color: var(--color-text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        margin-bottom: var(--space-md);
+      }
+    }
+
+    &__skill-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-sm);
+    }
+
+    &__skill-tag {
+      padding: var(--space-sm) var(--space-md);
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      font-size: var(--text-sm);
+      color: var(--color-text-secondary);
+      transition: all var(--duration-fast) ease;
+
+      &:hover {
+        border-color: var(--color-accent);
+        color: var(--color-accent-light);
+        background: rgba(var(--color-accent), 0.1);
+      }
+    }
+  }
+</style>

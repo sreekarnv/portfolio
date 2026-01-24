@@ -1,0 +1,230 @@
+---
+import { Icon } from "astro-icon/components";
+
+interface Service {
+  number: string;
+  icon: string;
+  title: string;
+  description: string;
+  features: string[];
+}
+
+const services: Service[] = [
+  {
+    number: "01",
+    icon: "lucide:monitor",
+    title: "Full Stack Development",
+    description:
+      "End-to-end web applications built with modern frameworks. From database design to responsive UIs — I ship complete, production-ready solutions.",
+    features: [
+      "React / Next.js / SvelteKit frontends",
+      "Node.js / FastAPI backends",
+      "Database design & optimization",
+      "Third-party API integrations",
+      "Responsive, accessible interfaces",
+    ],
+  },
+  {
+    number: "02",
+    icon: "lucide:layers",
+    title: "Backend & API Architecture",
+    description:
+      "Scalable backend systems designed for performance and maintainability. Clean APIs, event-driven patterns, and robust data flows.",
+    features: [
+      "Microservices & modular architecture",
+      "Event-driven systems (RabbitMQ, Redis)",
+      "RESTful & GraphQL API design",
+      "Authentication & authorization (OAuth, JWT)",
+      "Database modeling & optimization",
+    ],
+  },
+];
+---
+
+<section class="services" id="services">
+  <div class="services__container">
+    <header class="services__header">
+      <span class="services__tag" data-reveal>04</span>
+      <h2 class="services__title" data-reveal>Services</h2>
+      <p class="services__subtitle" data-reveal>What I can help you build</p>
+    </header>
+
+    <div class="services__grid">
+      {
+        services.map((service) => (
+          <article class="services__card" data-reveal>
+            <span class="services__number">{service.number}</span>
+            <div class="services__icon">
+              <Icon name={service.icon} size={40} />
+            </div>
+            <h3 class="services__card-title">{service.title}</h3>
+            <p class="services__description">{service.description}</p>
+            <ul class="services__features">
+              {service.features.map((feature) => (
+                <li>{feature}</li>
+              ))}
+            </ul>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style lang="scss">
+  .services {
+    padding: var(--space-5xl) 0;
+
+    &__container {
+      width: 100%;
+      max-width: var(--container-max);
+      margin: 0 auto;
+      padding: 0 var(--container-padding);
+    }
+
+    &__header {
+      margin-bottom: var(--space-4xl);
+    }
+
+    &__tag {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: var(--text-sm);
+      color: var(--color-accent);
+      margin-bottom: var(--space-md);
+    }
+
+    &__title {
+      font-size: var(--text-4xl);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    &__subtitle {
+      font-size: var(--text-lg);
+      color: var(--color-text-secondary);
+      margin-top: var(--space-md);
+    }
+
+    &__grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-2xl);
+      max-width: 1000px;
+      margin: 0 auto;
+
+      @media (max-width: 968px) {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    &__card {
+      position: relative;
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-xl);
+      padding: var(--space-3xl);
+      transition: all var(--duration-slow) var(--ease-out-quart);
+      overflow: hidden;
+
+      &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: var(--gradient-accent);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform var(--duration-slow) var(--ease-out-expo);
+      }
+
+      &:hover {
+        border-color: var(--color-border-hover);
+        transform: translateY(-8px);
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+
+        &::before {
+          transform: scaleX(1);
+        }
+
+        .services__icon {
+          background: var(--color-accent);
+          color: var(--color-primary);
+          transform: scale(1.05);
+        }
+
+        .services__features li {
+          color: var(--color-text);
+
+          &::before {
+            transform: scale(1.3);
+          }
+        }
+      }
+    }
+
+    &__number {
+      position: absolute;
+      top: var(--space-xl);
+      right: var(--space-xl);
+      font-family: var(--font-mono);
+      font-size: var(--text-sm);
+      color: var(--color-text-muted);
+      opacity: 0.5;
+    }
+
+    &__icon {
+      width: 72px;
+      height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(99, 102, 241, 0.1);
+      border-radius: var(--radius-lg);
+      margin-bottom: var(--space-xl);
+      color: var(--color-accent);
+      transition: all var(--duration-normal) ease;
+    }
+
+    &__card-title {
+      font-size: var(--text-2xl);
+      font-weight: 600;
+      margin-bottom: var(--space-md);
+    }
+
+    &__description {
+      color: var(--color-text-secondary);
+      font-size: var(--text-base);
+      margin-bottom: var(--space-xl);
+      line-height: 1.7;
+    }
+
+    &__features {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-sm);
+
+      li {
+        position: relative;
+        padding-left: var(--space-lg);
+        font-size: var(--text-sm);
+        color: var(--color-text-secondary);
+        transition: color var(--duration-fast) ease;
+
+        &::before {
+          content: "";
+          position: absolute;
+          left: 0;
+          top: 8px;
+          width: 6px;
+          height: 6px;
+          background: var(--color-accent);
+          border-radius: 50%;
+          transition: transform var(--duration-fast) ease;
+        }
+      }
+    }
+  }
+</style>

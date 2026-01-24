@@ -1,0 +1,93 @@
+@use './variables' as *;
+
+:root {
+	--font-sans: #{$font-space-grotesk};
+	--font-mono: #{$font-mono};
+
+	--color-white: #{$color-white};
+	--color-primary: #{$color-primary};
+	--color-secondary: #{$color-secondary};
+	--color-tertiary: #{$color-tertiary};
+	--color-surface: #{$color-surface};
+	--color-surface-hover: #{$color-surface-hover};
+	--color-border: #{rgba($color-white, 0.08)};
+	--color-border-hover: #{rgba($color-white, 0.15)};
+	--color-text: #{$color-text};
+	--color-text-secondary: #{$color-text-secondary};
+	--color-text-muted: #{$color-text-muted};
+	--color-accent: #{$color-accent};
+	--color-accent-dark: #{$color-accent-dark};
+	--color-accent-light: #{$color-accent-light};
+	--color-accent-glow: #{rgba($color-accent, 0.4)};
+	--color-cyan: #{$color-cyan};
+	--color-purple: #{$color-purple};
+	--color-pink: #{$color-pink};
+	--color-green: #{$color-green};
+
+	--gradient-accent: linear-gradient(
+		135deg,
+		var(--color-accent) 0%,
+		var(--color-purple) 50%,
+		var(--color-pink) 100%
+	);
+	--gradient-text: linear-gradient(
+		135deg,
+		var(--color-text) 0%,
+		var(--color-text-secondary) 100%
+	);
+	--gradient-glow: radial-gradient(
+		circle at center,
+		var(--color-accent-glow) 0%,
+		transparent 70%
+	);
+
+	--text-xs: clamp(1.2rem, 1.12rem + 0.25vw, 1.4rem);
+	--text-sm: clamp(1.4rem, 1.28rem + 0.35vw, 1.6rem);
+	--text-base: clamp(1.6rem, 1.44rem + 0.5vw, 1.8rem);
+	--text-lg: clamp(1.8rem, 1.6rem + 0.6vw, 2rem);
+	--text-xl: clamp(2rem, 1.76rem + 0.75vw, 2.4rem);
+	--text-2xl: clamp(2.4rem, 1.92rem + 1.5vw, 3.2rem);
+	--text-3xl: clamp(3.2rem, 2.4rem + 2.5vw, 4.8rem);
+	--text-4xl: clamp(4rem, 2.88rem + 3.5vw, 6.4rem);
+	--text-5xl: clamp(4.8rem, 3.2rem + 5vw, 9.6rem);
+	--text-6xl: clamp(5.6rem, 3.2rem + 7vw, 12.8rem);
+
+	--space-xs: 0.4rem;
+	--space-sm: 0.8rem;
+	--space-md: 1.6rem;
+	--space-lg: 2.4rem;
+	--space-xl: 3.2rem;
+	--space-2xl: clamp(3.2rem, 2.4rem + 2.5vw, 4.8rem);
+	--space-3xl: clamp(4rem, 3.2rem + 3vw, 6.4rem);
+	--space-4xl: clamp(4.8rem, 4rem + 4vw, 9.6rem);
+	--space-5xl: clamp(6.4rem, 4.8rem + 5vw, 12.8rem);
+
+	--ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+	--ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+	--ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+
+	--duration-fast: 0.15s;
+	--duration-normal: 0.3s;
+	--duration-slow: 0.5s;
+	--duration-slower: 0.8s;
+
+	--blur-sm: 4px;
+	--blur-md: 8px;
+	--blur-lg: 16px;
+	--blur-xl: 24px;
+
+	--shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.5);
+	--shadow-md: 0 4px 6px rgba(0, 0, 0, 0.5);
+	--shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.5);
+	--shadow-glow: 0 0 40px var(--color-accent-glow);
+
+	--radius-sm: 4px;
+	--radius-md: 8px;
+	--radius-lg: 12px;
+	--radius-xl: 16px;
+	--radius-2xl: 24px;
+	--radius-full: 9999px;
+
+	--container-max: 1400px;
+	--container-padding: clamp(1rem, 5vw, 3rem);
+}
