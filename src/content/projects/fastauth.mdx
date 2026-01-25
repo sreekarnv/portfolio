@@ -1,0 +1,207 @@
+---
+title: "FastAuth"
+subtitle: "Authentication Library for FastAPI"
+components: true
+description: "Open-source, production-ready authentication library for FastAPI with a flexible, database-agnostic approach through adapter patterns."
+tech:
+  - { name: "Python", color: "#3776AB" }
+  - { name: "FastAPI", color: "#009688" }
+  - { name: "SQLModel", color: "#E10098" }
+  - { name: "JWT", color: "#000000" }
+  - { name: "Argon2", color: "#6C3483" }
+github: "https://github.com/sreekarnv/fastauth"
+gradient: "radial-gradient(circle at 30% 70%, rgba(59, 130, 246, 0.25) 0%, transparent 50%), radial-gradient(circle at 70% 30%, rgba(16, 185, 129, 0.2) 0%, transparent 50%)"
+order: 3
+---
+
+import Mermaid from '~/components/ui/Mermaid.astro';
+
+FastAuth provides complete authentication workflows with a focus on security, flexibility, and developer experience.
+
+## Overview
+
+Authentication is a solved problem, yet developers keep reimplementing it with subtle security flaws. FastAuth aims to provide a drop-in solution that handles the complexities of modern authentication while remaining flexible enough to adapt to different project requirements.
+
+## Key Features
+
+### Complete Auth Workflows
+- **Registration** - Email/password signup with validation
+- **Login** - Secure credential verification
+- **Logout** - Session invalidation and token revocation
+- **Token Refresh** - Seamless token renewal without re-authentication
+
+### Role-Based Access Control
+- **Fine-Grained Permissions** - Define granular access rules
+- **Role Hierarchy** - Inherit permissions from parent roles
+- **Resource-Level Authorization** - Control access per resource
+- **Decorator-Based** - Simple `@requires_role("admin")` syntax
+
+### Session Management
+- **Multi-Device Support** - Track sessions across devices
+- **Session Listing** - Users can see all active sessions
+- **Remote Logout** - Revoke sessions from any device
+- **Activity Tracking** - Last activity timestamps
+
+### Social Authentication
+- **OAuth Providers** - Google, GitHub, and more
+- **Account Linking** - Connect multiple providers to one account
+- **Provider Abstraction** - Consistent API across providers
+
+### Self-Service Features
+- **Email Verification** - Confirm user email ownership
+- **Password Reset** - Secure reset flow with expiring tokens
+- **Profile Updates** - Users manage their own data
+
+### Type Safety
+- **Full Type Hints** - 100% type coverage
+- **Pydantic Models** - Validated request/response schemas
+- **IDE Support** - Autocomplete and error detection
+
+## Security
+
+FastAuth implements security best practices recommended by OWASP:
+
+### Password Security
+- **Argon2 Hashing** - Memory-hard algorithm resistant to GPU attacks
+- **Configurable Parameters** - Tune memory, iterations, and parallelism
+- **Automatic Rehashing** - Upgrade hashes when parameters change
+
+### Token Security
+- **JWT with Configurable Expiration** - Short-lived access tokens
+- **Refresh Token Rotation** - New refresh token on each use
+- **Token Binding** - Optionally bind tokens to client fingerprint
+
+### Rate Limiting
+- **Login Attempts** - Prevent brute force attacks
+- **Password Reset** - Limit reset email frequency
+- **Registration** - Prevent spam account creation
+
+### Session Security
+- **Secure Cookie Flags** - HttpOnly, Secure, SameSite
+- **Session Revocation** - Immediate invalidation capability
+- **Concurrent Session Limits** - Optionally limit active sessions
+
+## Architecture
+
+FastAuth uses a layered architecture that separates concerns:
+
+<Mermaid chart={`
+flowchart TB
+    subgraph API["API Layer"]
+        A[FastAPI Routes]
+        B[Dependency Injection]
+        C[Request Validation]
+    end
+
+    subgraph Service["Service Layer"]
+        D[AuthService]
+        E[UserService]
+        F[TokenService]
+        G[SessionService]
+    end
+
+    subgraph Repository["Repository Layer"]
+        H[UserRepository]
+        I[SessionRepository]
+        J[TokenRepository]
+    end
+
+    subgraph Adapter["Adapter Layer"]
+        K[SQLAlchemy Adapter]
+        L[MongoDB Adapter]
+        M[Custom Adapter]
+    end
+
+    subgraph Database["Database"]
+        N[(PostgreSQL)]
+        O[(MongoDB)]
+        P[(Any DB)]
+    end
+
+    A --> D
+    A --> E
+    B --> F
+    C --> G
+
+    D --> H
+    E --> H
+    F --> J
+    G --> I
+
+    H --> K
+    H --> L
+    H --> M
+    I --> K
+    I --> L
+    J --> K
+    J --> L
+
+    K --> N
+    L --> O
+    M --> P
+`} />
+
+### Database Agnostic
+The adapter pattern allows FastAuth to work with any database:
+- **SQLAlchemy** - PostgreSQL, MySQL, SQLite
+- **MongoDB** - Document-based storage
+- **Custom** - Implement the adapter interface
+
+## Usage
+
+```python
+from fastapi import FastAPI
+from fastauth import FastAuth, SQLModelAdapter
+
+app = FastAPI()
+
+# Initialize FastAuth with your database
+auth = FastAuth(
+    adapter=SQLModelAdapter(engine),
+    secret_key="your-secret-key",
+    access_token_expire_minutes=30,
+)
+
+# Add auth routes
+app.include_router(auth.router, prefix="/auth")
+
+# Protect endpoints
+@app.get("/protected")
+@auth.requires_auth
+async def protected_route(user: User = Depends(auth.current_user)):
+    return {"message": f"Hello, {user.email}"}
+```
+
+## Configuration
+
+FastAuth is highly configurable:
+
+```python
+auth = FastAuth(
+    # Token settings
+    access_token_expire_minutes=30,
+    refresh_token_expire_days=7,
+
+    # Password requirements
+    password_min_length=8,
+    password_require_uppercase=True,
+    password_require_number=True,
+
+    # Rate limiting
+    max_login_attempts=5,
+    lockout_duration_minutes=15,
+
+    # Features
+    email_verification_required=True,
+    allow_registration=True,
+)
+```
+
+## What I Learned
+
+Building FastAuth deepened my understanding of:
+
+- **Security tradeoffs** - Convenience vs. security is a constant balance
+- **API design** - Making complex features feel simple requires iteration
+- **Open source maintenance** - Documentation is as important as code
+- **Python ecosystem** - Type hints and async/await patterns

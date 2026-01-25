@@ -1,0 +1,71 @@
+---
+interface Props {
+  chart: string;
+}
+
+const { chart } = Astro.props;
+const id = `mermaid-${Math.random().toString(36).slice(2, 9)}`;
+---
+
+<div class="mermaid-wrapper">
+  <pre id={id} class="mermaid">{chart}</pre>
+</div>
+
+<script>
+  import mermaid from "mermaid";
+
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: "dark",
+    themeVariables: {
+      primaryColor: "#6366f1",
+      primaryTextColor: "#fafafa",
+      primaryBorderColor: "#4f46e5",
+      lineColor: "#71717a",
+      secondaryColor: "#1c1c1f",
+      tertiaryColor: "#18181b",
+      background: "#0a0a0b",
+      mainBkg: "#1c1c1f",
+      secondBkg: "#18181b",
+      border1: "#27272a",
+      border2: "#3f3f46",
+      arrowheadColor: "#71717a",
+      fontFamily: "Space Grotesk, sans-serif",
+      fontSize: "14px",
+      textColor: "#a1a1aa",
+      nodeTextColor: "#fafafa",
+    },
+    flowchart: {
+      htmlLabels: true,
+      curve: "basis",
+    },
+    sequence: {
+      mirrorActors: false,
+    },
+  });
+
+  // Re-render on page load (for view transitions)
+  document.addEventListener("astro:page-load", () => {
+    mermaid.run();
+  });
+</script>
+
+<style>
+  .mermaid-wrapper {
+    margin: var(--space-xl) 0;
+    padding: var(--space-lg);
+    background: var(--color-tertiary);
+    border-radius: var(--radius-lg);
+    overflow-x: auto;
+  }
+
+  .mermaid {
+    display: flex;
+    justify-content: center;
+  }
+
+  .mermaid :global(svg) {
+    max-width: 100%;
+    height: auto;
+  }
+</style>

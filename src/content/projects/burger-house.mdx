@@ -1,0 +1,154 @@
+---
+title: "Burger House"
+subtitle: "E-Commerce Platform"
+components: true
+description: "Full-stack e-commerce platform for fast-food ordering with custom burger builder, real-time delivery tracking, and admin dashboard."
+tech:
+  - { name: "Next.js", color: "#000000" }
+  - { name: "TypeScript", color: "#3178C6" }
+  - { name: "tRPC", color: "#398CCB" }
+  - { name: "MongoDB", color: "#47A248" }
+  - { name: "Redux Toolkit", color: "#764ABC" }
+  - { name: "Zod", color: "#3E67B1" }
+  - { name: "MapBox", color: "#4264FB" }
+  - { name: "Sass", color: "#CC6699" }
+github: "https://github.com/sreekarnv/burger-house"
+liveDemo: "https://burger-house-sreekar.netlify.app/"
+screenshots:
+  - "https://raw.githubusercontent.com/sreekarnv/burger-house/master/assets/home.png"
+  - "https://raw.githubusercontent.com/sreekarnv/burger-house/master/assets/menu.png"
+  - "https://raw.githubusercontent.com/sreekarnv/burger-house/master/assets/make-1.png"
+  - "https://raw.githubusercontent.com/sreekarnv/burger-house/master/assets/make-2.png"
+  - "https://raw.githubusercontent.com/sreekarnv/burger-house/master/assets/customer-dashboard-1.png"
+  - "https://raw.githubusercontent.com/sreekarnv/burger-house/master/assets/admin-dashboard-1.png"
+gradient: "radial-gradient(circle at 30% 70%, rgba(249, 115, 22, 0.25) 0%, transparent 50%), radial-gradient(circle at 70% 30%, rgba(236, 72, 153, 0.2) 0%, transparent 50%)"
+order: 4
+---
+
+import Mermaid from '~/components/ui/Mermaid.astro';
+
+Burger House enables customers to browse a curated menu or construct personalized burgers by selecting specific ingredients, with real-time order tracking and a comprehensive admin dashboard.
+
+## Overview
+
+Burger House is a full-featured e-commerce platform that demonstrates modern web development practices. The application goes beyond a simple ordering system to include features like a custom burger builder with drag-and-drop ingredients and real-time delivery tracking on a map.
+
+## Key Features
+
+### Custom Burger Builder
+- **Real-Time Preview** - See your burger as you build it
+- **Price Calculator** - Dynamic pricing based on selections
+
+### Menu & Ordering
+- **Curated Menu** - Pre-designed burger options
+- **Cart Management** - Add, remove, and modify quantities
+- **Order History** - View past orders and reorder
+
+### User Experience
+- **JWT Authentication** - Secure login and registration
+- **Profile Management** - Update personal information
+- **Order Tracking** - Real-time status updates
+
+### Delivery Tracking
+- **MapBox Integration** - Interactive delivery map
+- **Live Location** - See driver position in real-time
+
+### Admin Dashboard
+- **Order Management** - View and update order statuses
+
+## Technical Highlights
+
+### Type-Safe Full Stack
+- **tRPC** - End-to-end type safety without code generation
+- **Zod Validation** - Runtime type checking with static inference
+- **TypeScript** - Strict mode throughout the codebase
+
+### Performance
+- **Server-Side Rendering** - Fast initial page loads
+- **Optimistic Updates** - Instant UI feedback
+- **Image Optimization** - Next.js automatic optimization
+- **Code Splitting** - Route-based lazy loading
+
+### State Management
+- **Redux Toolkit** - Centralized cart and user state
+- **Persist** - Cart survives page refreshes
+
+### Styling
+- **Sass Modules** - Scoped component styles
+- **Framer Motion** - Smooth animations
+- **Responsive Design** - Mobile-first approach
+
+## Architecture
+
+<Mermaid chart={`
+flowchart TB
+    subgraph Client["Client Layer"]
+        A[Next.js Pages]
+        B[Redux Store]
+        C[React Components]
+    end
+
+    subgraph API["API Layer"]
+        D[tRPC Router]
+        E[Auth Procedures]
+        F[Order Procedures]
+        G[Product Procedures]
+    end
+
+    subgraph Data["Data Layer"]
+        H[(MongoDB)]
+        I[Mongoose ODM]
+    end
+
+    subgraph External["External Services"]
+        J[Cloudinary\nImages]
+        K[MapBox\nTracking]
+    end
+
+    A --> B
+    A --> C
+    B --> D
+    C --> D
+
+    D --> E
+    D --> F
+    D --> G
+
+    E --> I
+    F --> I
+    G --> I
+    I --> H
+
+    C --> J
+    F --> K
+`} />
+
+## Screenshots
+
+The application features a modern, responsive design:
+
+- **Home Page** - Hero section with featured burgers
+- **Menu Page** - Grid layout with filtering options
+- **Burger Builder** - Interactive ingredient stacking
+- **Customer Dashboard** - Order history and tracking
+- **Admin Dashboard** - Order and inventory management
+
+## Getting Started
+
+```bash
+# Clone the repository
+git clone https://github.com/sreekarnv/burger-house.git
+cd burger-house
+
+# Install dependencies
+npm install
+
+# Set up environment variables
+cp .env.example .env.local
+# Add your MongoDB URI, Cloudinary keys, and MapBox token
+
+# Run development server
+npm run dev
+
+# Open http://localhost:3000
+```

@@ -1,0 +1,446 @@
+---
+import { getCollection } from "astro:content";
+import { Icon } from "astro-icon/components";
+import Layout from "~/layouts/Layout.astro";
+import Button from "~/components/ui/Button.astro";
+
+export async function getStaticPaths() {
+  const projects = await getCollection("projects");
+  return projects.map((project) => ({
+    params: { slug: project.slug },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+const { Content } = await project.render();
+const { data } = project;
+---
+
+<Layout
+  title={`${data.title} | Sreekar Nutulapati`}
+  description={data.description}
+>
+  <main class="project-detail">
+    <div class="project-detail__bg">
+      <div
+        class="project-detail__gradient"
+        style={`--project-gradient: ${data.gradient}`}
+      >
+      </div>
+    </div>
+
+    <div class="project-detail__container">
+      <a href="/#projects" class="project-detail__back">
+        <Icon name="lucide:arrow-left" size={20} />
+        <span>Back to Projects</span>
+      </a>
+
+      <header class="project-detail__header">
+        <div class="project-detail__badges">
+          {
+            data.tech.slice(0, 6).map((t) => (
+              <span
+                class="project-detail__badge"
+                style={`--badge-color: ${t.color}`}
+              >
+                {t.name}
+              </span>
+            ))
+          }
+          {data.tech.length > 6 && (
+            <span class="project-detail__badge project-detail__badge--more">
+              +{data.tech.length - 6} more
+            </span>
+          )}
+        </div>
+        <h1 class="project-detail__title">{data.title}</h1>
+        <p class="project-detail__subtitle">{data.subtitle}</p>
+        <p class="project-detail__description">{data.description}</p>
+      </header>
+
+      <div class="project-detail__links">
+        <Button
+          href={data.github}
+          variant="primary"
+          icon="lucide:github"
+          external
+        >
+          View Source
+        </Button>
+        {
+          data.liveDemo && (
+            <Button
+              href={data.liveDemo}
+              variant="secondary"
+              icon="lucide:external-link"
+              external
+            >
+              Live Demo
+            </Button>
+          )
+        }
+        {
+          data.docs && (
+            <Button
+              href={data.docs}
+              variant="outline"
+              icon="lucide:book-open"
+              external
+            >
+              Documentation
+            </Button>
+          )
+        }
+      </div>
+
+      {
+        data.screenshots && data.screenshots.length > 0 && (
+          <div class="project-detail__screenshots">
+            {data.screenshots.map((src, i) => (
+              <img
+                src={src}
+                alt={`${data.title} screenshot ${i + 1}`}
+                class="project-detail__screenshot"
+                loading={i === 0 ? "eager" : "lazy"}
+              />
+            ))}
+          </div>
+        )
+      }
+
+      <article class="project-detail__content prose">
+        <Content />
+      </article>
+
+      <div class="project-detail__tech-section">
+        <h2>Tech Stack</h2>
+        <div class="project-detail__tech-grid">
+          {
+            data.tech.map((t) => (
+              <div class="project-detail__tech-item">
+                <span
+                  class="project-detail__tech-dot"
+                  style={`background: ${t.color}`}
+                />
+                <span>{t.name}</span>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+
+      <div class="project-detail__footer">
+        <a href="/#projects" class="project-detail__back">
+          <Icon name="lucide:arrow-left" size={20} />
+          <span>Back to All Projects</span>
+        </a>
+      </div>
+    </div>
+  </main>
+</Layout>
+
+<style lang="scss">
+  .project-detail {
+    min-height: 100vh;
+    padding: var(--space-5xl) 0 var(--space-3xl);
+    position: relative;
+
+    &__bg {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      overflow: hidden;
+    }
+
+    &__gradient {
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: var(--project-gradient);
+      opacity: 0.5;
+    }
+
+    &__container {
+      width: 100%;
+      max-width: 1150px;
+      margin: 0 auto;
+      padding: 0 var(--container-padding);
+    }
+
+    &__back {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-sm);
+      color: var(--color-text-secondary);
+      font-size: var(--text-sm);
+      margin-bottom: var(--space-2xl);
+      transition: color var(--duration-fast) ease;
+
+      &:hover {
+        color: var(--color-text);
+      }
+    }
+
+    &__header {
+      margin-bottom: var(--space-2xl);
+    }
+
+    &__badges {
+      display: flex;
+      gap: var(--space-sm);
+      flex-wrap: wrap;
+      margin-bottom: var(--space-lg);
+    }
+
+    &__badge {
+      padding: var(--space-xs) var(--space-md);
+      font-size: var(--text-xs);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border-radius: var(--radius-full);
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--badge-color, var(--color-text-secondary));
+
+      &--more {
+        color: var(--color-text-muted);
+      }
+    }
+
+    &__title {
+      font-size: var(--text-5xl);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: var(--space-sm);
+
+      @media (max-width: 768px) {
+        font-size: var(--text-4xl);
+      }
+    }
+
+    &__subtitle {
+      font-size: var(--text-xl);
+      color: var(--color-accent-light);
+      margin-bottom: var(--space-md);
+    }
+
+    &__description {
+      font-size: var(--text-lg);
+      color: var(--color-text-secondary);
+      line-height: 1.7;
+    }
+
+    &__links {
+      display: flex;
+      gap: var(--space-md);
+      flex-wrap: wrap;
+      margin-bottom: var(--space-3xl);
+    }
+
+    &__screenshots {
+      display: grid;
+      gap: var(--space-lg);
+      margin-bottom: var(--space-3xl);
+    }
+
+    &__screenshot {
+      width: 100%;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--color-border);
+      transition: transform var(--duration-normal) ease;
+
+      &:hover {
+        transform: scale(1.02);
+      }
+    }
+
+    &__content {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-xl);
+      padding: var(--space-2xl);
+      margin-bottom: var(--space-3xl);
+
+      @media (max-width: 768px) {
+        padding: var(--space-xl);
+      }
+    }
+
+    &__tech-section {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-xl);
+      padding: var(--space-2xl);
+      margin-bottom: var(--space-3xl);
+
+      h2 {
+        font-size: var(--text-xl);
+        font-weight: 600;
+        margin-bottom: var(--space-lg);
+      }
+    }
+
+    &__tech-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: var(--space-md);
+    }
+
+    &__tech-item {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+      padding: var(--space-sm) var(--space-md);
+      background: var(--color-tertiary);
+      border-radius: var(--radius-md);
+      font-size: var(--text-sm);
+    }
+
+    &__tech-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    &__footer {
+      display: flex;
+      justify-content: center;
+      padding-top: var(--space-xl);
+      border-top: 1px solid var(--color-border);
+    }
+  }
+
+  // Prose styles for MDX content
+  .prose {
+    :global(h2) {
+      font-size: var(--text-2xl);
+      font-weight: 600;
+      margin: var(--space-2xl) 0 var(--space-md);
+      color: var(--color-text);
+
+      &:first-child {
+        margin-top: 0;
+      }
+    }
+
+    :global(h3) {
+      font-size: var(--text-lg);
+      font-weight: 600;
+      margin: var(--space-xl) 0 var(--space-md);
+      color: var(--color-text);
+    }
+
+    :global(p) {
+      color: var(--color-text-secondary);
+      line-height: 1.8;
+      margin-bottom: var(--space-md);
+    }
+
+    :global(ul),
+    :global(ol) {
+      list-style: none;
+      padding: 0;
+      margin: var(--space-md) 0 var(--space-lg);
+    }
+
+    :global(li) {
+      position: relative;
+      padding-left: var(--space-lg);
+      color: var(--color-text-secondary);
+      margin-bottom: var(--space-sm);
+      line-height: 1.7;
+
+      &::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0.65em;
+        width: 6px;
+        height: 6px;
+        background: var(--color-accent);
+        border-radius: 50%;
+      }
+    }
+
+    :global(strong) {
+      color: var(--color-text);
+      font-weight: 600;
+    }
+
+    :global(code) {
+      font-family: var(--font-mono);
+      font-size: 0.9em;
+      padding: 0.2em 0.4em;
+      background: var(--color-tertiary);
+      border-radius: var(--radius-sm);
+      color: var(--color-accent-light);
+    }
+
+    :global(pre) {
+      background: var(--color-tertiary);
+      border-radius: var(--radius-lg);
+      padding: var(--space-lg);
+      overflow-x: auto;
+      margin: var(--space-lg) 0;
+
+      :global(code) {
+        padding: 0;
+        background: none;
+        font-size: var(--text-sm);
+        color: var(--color-text-secondary);
+      }
+    }
+
+    :global(table) {
+      width: 100%;
+      border-collapse: collapse;
+      margin: var(--space-lg) 0;
+      font-size: var(--text-sm);
+    }
+
+    :global(th),
+    :global(td) {
+      padding: var(--space-sm) var(--space-md);
+      text-align: left;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    :global(th) {
+      color: var(--color-text);
+      font-weight: 600;
+    }
+
+    :global(td) {
+      color: var(--color-text-secondary);
+    }
+
+    :global(blockquote) {
+      border-left: 3px solid var(--color-accent);
+      padding-left: var(--space-lg);
+      margin: var(--space-lg) 0;
+      font-style: italic;
+      color: var(--color-text-muted);
+    }
+
+    :global(hr) {
+      border: none;
+      border-top: 1px solid var(--color-border);
+      margin: var(--space-2xl) 0;
+    }
+
+    :global(a) {
+      color: var(--color-accent-light);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+
+      &:hover {
+        color: var(--color-accent);
+      }
+    }
+  }
+</style>

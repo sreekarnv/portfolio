@@ -64,15 +64,17 @@ const structuredData = {
     <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
   </head>
   <body>
-    <Cursor />
     <noscript>
       <div style="padding: 2rem; text-align: center; background: #1a1a1b; color: #e4e4e7;">
         This website requires JavaScript for full functionality. Please enable JavaScript to continue.
       </div>
     </noscript>
+    <Cursor />
     <slot />
     <script>
       import "~/ts/main";
+    </script>
+    <script>
       import { inject } from "@vercel/analytics";
       import { injectSpeedInsights } from "@vercel/speed-insights";
       inject();

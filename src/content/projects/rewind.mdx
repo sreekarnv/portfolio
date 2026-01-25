@@ -1,0 +1,166 @@
+---
+title: "Rewind"
+subtitle: "Real-Time HTTP Traffic Analyzer"
+components: true
+description: "Modern debugging and monitoring platform that captures and visualizes network activity in real-time, combining a high-performance C++ capture agent with a Bun/SvelteKit web interface."
+tech:
+  - { name: "C++", color: "#00599C" }
+  - { name: "SvelteKit", color: "#FF3E00" }
+  - { name: "TypeScript", color: "#3178C6" }
+  - { name: "Bun", color: "#FBF0DF" }
+  - { name: "ElysiaJS", color: "#9553E9" }
+  - { name: "MongoDB", color: "#47A248" }
+  - { name: "TailwindCSS", color: "#06B6D4" }
+  - { name: "Prometheus", color: "#E6522C" }
+github: "https://github.com/sreekarnv/rewind"
+docs: "https://sreekarnv.github.io/rewind/"
+screenshots:
+  - "https://raw.githubusercontent.com/sreekarnv/rewind/main/docs/public/metrics.png"
+  - "https://raw.githubusercontent.com/sreekarnv/rewind/main/docs/public/capture-terminal.png"
+  - "https://raw.githubusercontent.com/sreekarnv/rewind/main/docs/public/session-detail.png"
+  - "https://raw.githubusercontent.com/sreekarnv/rewind/main/docs/public/alert-rules.png"
+gradient: "radial-gradient(circle at 30% 70%, rgba(34, 211, 238, 0.25) 0%, transparent 50%), radial-gradient(circle at 70% 30%, rgba(168, 85, 247, 0.2) 0%, transparent 50%)"
+order: 2
+---
+
+import Mermaid from '~/components/ui/Mermaid.astro';
+
+Rewind provides developers with deep insight into HTTP traffic through real-time capture and analysis, making debugging network issues faster and more intuitive.
+
+## Overview
+
+Rewind is a modern network debugging tool that bridges the gap between low-level packet capture and high-level developer experience. Unlike traditional tools like Wireshark, Rewind focuses specifically on HTTP traffic and presents it in a developer-friendly web interface.
+
+## Key Features
+
+### In-Browser Terminal
+- **Direct Agent Control** - Interact with the C++ capture agent from the web UI
+- **Real-Time Output** - See captured packets as they arrive
+- **Command History** - Navigate through previous commands
+
+### Traffic Analysis
+- **Real-Time Metrics** - Traffic monitoring with 2-second polling intervals
+- **Request/Response Pairing** - Automatically correlate requests with their responses
+- **Timing Breakdown** - See DNS, TCP, TLS, and server timing
+
+### Privacy & Security
+- **PII Sanitization** - Automatically anonymize sensitive data during capture
+- **Configurable Redaction** - Define patterns for data you want hidden
+- **Local Processing** - All data stays on your machine
+
+### Developer Tools
+- **Request Replay** - One-click functionality for debugging APIs
+- **Syntax Highlighting** - HTTP headers viewer with proper formatting
+- **Smart Parsing** - Automatic extraction of query parameters, cookies, and form data
+- **Export Options** - Export sessions as HAR, cURL, or JSON
+
+### Alerting System
+- **Custom Rules** - Define alerts based on status codes, response times, and URL patterns
+- **Email Notifications** - SMTP-based alerts with HTML templates
+- **Webhook Support** - Integrate with Slack, Discord, or custom endpoints
+
+### Session Management
+- **MongoDB Storage** - Persistent session storage for later analysis
+- **Filtering & Search** - Find specific requests across sessions
+- **Tagging** - Organize sessions with custom tags
+
+## Architecture
+
+Rewind follows a three-tier architecture designed for performance and extensibility:
+
+<Mermaid chart={`
+flowchart LR
+    subgraph CaptureLayer["Capture Layer"]
+        A[C++ Agent\nPcapPlusPlus]
+        B[Network Interface]
+    end
+
+    subgraph BackendLayer["Backend Layer"]
+        C[Bun/Elysia Server]
+        D[WebSocket Handler]
+        E[REST API]
+        F[Process Manager]
+    end
+
+    subgraph FrontendLayer["Frontend Layer"]
+        G[SvelteKit App]
+        H[Traffic Dashboard]
+        I[Alert Manager]
+        J[Session Viewer]
+    end
+
+    subgraph Storage
+        K[(MongoDB)]
+        L[Prometheus]
+    end
+
+    B -->|packets| A
+    A -->|Unix Socket| F
+    F -->|spawn/monitor| A
+    C --> D
+    C --> E
+    C --> F
+    D -->|real-time| G
+    E -->|REST| G
+    G --> H
+    G --> I
+    G --> J
+    C --> K
+    C --> L
+`} />
+
+### C++ Capture Agent
+- Built with **PcapPlusPlus** for high-performance packet capture
+- Runs with elevated privileges for network interface access
+- Communicates with backend via Unix sockets
+
+### Bun/Elysia Backend
+- **WebSocket Streams** - Real-time data push to frontend
+- **Process Management** - Spawns and monitors capture agent
+- **REST API** - Session CRUD operations and configuration
+
+### SvelteKit Frontend
+- **Reactive UI** - Updates instantly as packets arrive
+- **TailwindCSS** - Clean, responsive design
+- **Client-Side Storage** - Quick access to recent sessions
+
+## Use Cases
+
+- **API Debugging** - See exactly what your app sends and receives
+- **Performance Analysis** - Identify slow endpoints and bottlenecks
+- **Security Auditing** - Monitor for sensitive data leakage
+- **Integration Testing** - Verify third-party API interactions
+- **Learning Tool** - Understand HTTP protocol in depth
+
+## Requirements
+
+- Administrator/sudo access for network interface access
+- Bun 1.0+ or Node.js 18+
+- MongoDB instance for persistent storage
+- Optional: SMTP server for email alerts
+
+## Getting Started
+
+```bash
+# Clone the repository
+git clone https://github.com/sreekarnv/rewind.git
+cd rewind
+
+# Install dependencies
+bun install
+
+# Build the C++ agent
+cd agent && cmake . && make
+
+# Start the application
+bun run dev
+```
+
+## What I Learned
+
+Building Rewind pushed me to work across the entire stack:
+
+- **C++ for performance** - When milliseconds matter, managed languages add overhead
+- **WebSocket architecture** - Real-time data requires different thinking than REST
+- **Cross-platform challenges** - Network APIs differ significantly between OSes
+- **User experience** - Making complex data accessible requires careful design

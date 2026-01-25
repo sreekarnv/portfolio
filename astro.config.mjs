@@ -2,7 +2,7 @@
 import { defineConfig } from 'astro/config';
 import icon from 'astro-icon';
 import sitemap from '@astrojs/sitemap';
-import partytown from '@astrojs/partytown';
+import mdx from '@astrojs/mdx';
 
 export default defineConfig({
     site: "https://sreekarnutulapati.vercel.app",
@@ -14,11 +14,7 @@ export default defineConfig({
     integrations: [
         icon(),
         sitemap(),
-        partytown({
-            config: {
-                forward: ['dataLayer.push'],
-            },
-        }),
+        mdx(),
     ],
     vite: {
         build: {

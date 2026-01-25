@@ -5,6 +5,7 @@ interface Props {
   href?: string;
   variant?: "primary" | "secondary" | "outline";
   icon?: string;
+  external?: boolean;
   class?: string;
   [key: string]: unknown;
 }
@@ -13,17 +14,20 @@ const {
   href,
   variant = "primary",
   icon,
+  external = false,
   class: className,
   ...rest
 } = Astro.props;
 
 const Element = href ? "a" : "button";
+const externalProps = external ? { target: "_blank", rel: "noopener noreferrer" } : {};
 ---
 
 <Element
   href={href}
   class:list={["btn", `btn--${variant}`, className]}
   data-magnetic
+  {...externalProps}
   {...rest}
 >
   <span class="btn__text">
