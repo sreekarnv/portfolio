@@ -184,6 +184,10 @@ const WEB3FORMS_ACCESS_KEY = import.meta.env.PUBLIC_WEB3FORMS_ACCESS_KEY;
       border: 1px solid var(--color-border);
       border-radius: var(--radius-xl);
       padding: var(--space-2xl);
+
+      @media (max-width: 500px) {
+        padding: var(--space-xl) var(--space-xl);
+      }
     }
 
     &__form-group {
