@@ -119,27 +119,32 @@ const navLinks = [
     }
 
     &__toggle {
+      position: relative;
+      width: 32px;
+      height: 32px;
       display: none;
-      flex-direction: column;
-      gap: 6px;
-      padding: var(--space-sm);
+      justify-content: center;
+      align-items: center;
+      padding: 0;
 
       &--active {
         .nav__toggle-bar:first-child {
-          transform: rotate(45deg) translate(5px, 5px);
+          transform: rotate(135deg);
         }
 
-        .nav__toggle-bar:last-child {
-          transform: rotate(-45deg) translate(6px, -6px);
+        .nav__toggle-bar:last-child {       
+          transform: rotate(-135deg);
         }
       }
     }
 
     &__toggle-bar {
+      position: absolute;
       width: 24px;
       height: 2px;
       background: var(--color-text);
       transition: all var(--duration-normal) var(--ease-out-quart);
+      transform-origin: center;
     }
 
     @media (max-width: 768px) {
@@ -149,6 +154,23 @@ const navLinks = [
 
       &__toggle {
         display: flex;
+      }
+
+      &__toggle-bar {
+        position: absolute;
+        width: 24px;
+        height: 2px;
+        background: var(--color-text);
+        transition: all var(--duration-normal) var(--ease-out-quart);
+        transform-origin: center;
+      }
+
+      &__toggle-bar:first-child {
+        transform: translateY(-6px);
+      }
+
+      &__toggle-bar:last-child {
+        transform: translateY(6px);
       }
     }
   }
