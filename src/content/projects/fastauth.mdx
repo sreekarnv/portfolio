@@ -81,67 +81,7 @@ FastAuth implements security best practices recommended by OWASP:
 - **Session Revocation** - Immediate invalidation capability
 - **Concurrent Session Limits** - Optionally limit active sessions
 
-## Architecture
-
-FastAuth uses a layered architecture that separates concerns:
-
-<Mermaid chart={`
-flowchart TB
-    subgraph API["API Layer"]
-        A[FastAPI Routes]
-        B[Dependency Injection]
-        C[Request Validation]
-    end
-
-    subgraph Service["Service Layer"]
-        D[AuthService]
-        E[UserService]
-        F[TokenService]
-        G[SessionService]
-    end
-
-    subgraph Repository["Repository Layer"]
-        H[UserRepository]
-        I[SessionRepository]
-        J[TokenRepository]
-    end
-
-    subgraph Adapter["Adapter Layer"]
-        K[SQLAlchemy Adapter]
-        L[MongoDB Adapter]
-        M[Custom Adapter]
-    end
-
-    subgraph Database["Database"]
-        N[(PostgreSQL)]
-        O[(MongoDB)]
-        P[(Any DB)]
-    end
-
-    A --> D
-    A --> E
-    B --> F
-    C --> G
-
-    D --> H
-    E --> H
-    F --> J
-    G --> I
-
-    H --> K
-    H --> L
-    H --> M
-    I --> K
-    I --> L
-    J --> K
-    J --> L
-
-    K --> N
-    L --> O
-    M --> P
-`} />
-
-### Database Agnostic
+## Database Agnostic
 The adapter pattern allows FastAuth to work with any database:
 - **SQLAlchemy** - PostgreSQL, MySQL, SQLite
 - **MongoDB** - Document-based storage
@@ -150,52 +90,53 @@ The adapter pattern allows FastAuth to work with any database:
 ## Usage
 
 ```python
-from fastapi import FastAPI
-from fastauth import FastAuth, SQLModelAdapter
+from fastapi import Depends, FastAPI
+from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
+from sqlmodel import Session, SQLModel, create_engine
 
-app = FastAPI()
+from fastauth.api import dependencies
+from fastauth.api.auth import router as auth_router
+from fastauth.security.jwt import decode_access_token
 
-# Initialize FastAuth with your database
-auth = FastAuth(
-    adapter=SQLModelAdapter(engine),
-    secret_key="your-secret-key",
-    access_token_expire_minutes=30,
-)
+# Database setup
+DATABASE_URL = "sqlite:///./app.db"
+engine = create_engine(DATABASE_URL)
 
-# Add auth routes
-app.include_router(auth.router, prefix="/auth")
+def init_db():
+    SQLModel.metadata.create_all(engine)
 
-# Protect endpoints
+def get_session():
+    with Session(engine) as session:
+        yield session
+
+# Create app
+app = FastAPI(title="My Auth App")
+
+init_db()
+
+# Include auth router
+app.include_router(auth_router)
+
+# Override session dependency
+app.dependency_overrides[dependencies.get_session] = get_session
+
+# Protected route
+security = HTTPBearer()
+
 @app.get("/protected")
-@auth.requires_auth
-async def protected_route(user: User = Depends(auth.current_user)):
-    return {"message": f"Hello, {user.email}"}
+def protected(credentials: HTTPAuthorizationCredentials = Depends(security)):
+    payload = decode_access_token(credentials.credentials)
+    return {
+        "message": "You are authenticated",
+        "user_id": payload["sub"],
+    }
 ```
 
 ## Configuration
 
 FastAuth is highly configurable:
 
-```python
-auth = FastAuth(
-    # Token settings
-    access_token_expire_minutes=30,
-    refresh_token_expire_days=7,
-
-    # Password requirements
-    password_min_length=8,
-    password_require_uppercase=True,
-    password_require_number=True,
-
-    # Rate limiting
-    max_login_attempts=5,
-    lockout_duration_minutes=15,
-
-    # Features
-    email_verification_required=True,
-    allow_registration=True,
-)
-```
+You can learn more by visting the [Core Concepts](https://sreekarnv.github.io/fastauth/getting-started/core-concepts/) Page.
 
 ## What I Learned
 
