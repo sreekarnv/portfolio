@@ -85,42 +85,43 @@ flowchart TB
     subgraph Client["Client Layer"]
         A[Next.js Pages]
         B[Redux Store]
-        C[React Components]
+        C[tRPC Client]
+        D[React Components]
     end
 
     subgraph API["API Layer"]
-        D[tRPC Router]
-        E[Auth Procedures]
-        F[Order Procedures]
-        G[Product Procedures]
+        E[tRPC Router]
+        F[Auth Procedures]
+        G[Order Procedures]
+        H[Product Procedures]
     end
 
     subgraph Data["Data Layer"]
-        H[(MongoDB)]
-        I[Mongoose ODM]
+        I[(MongoDB)]
+        J[Mongoose ODM]
     end
 
     subgraph External["External Services"]
-        J[Cloudinary\nImages]
-        K[MapBox\nTracking]
+        K[Cloudinary\nImages]
+        L[MapBox\nTracking]
     end
 
     A --> B
+    A --> D
     A --> C
-    B --> D
-    C --> D
+    C --> E
 
-    D --> E
-    D --> F
-    D --> G
+    E --> F
+    E --> G
+    E --> H
 
-    E --> I
-    F --> I
-    G --> I
-    I --> H
+    F --> J
+    G --> J
+    H --> J
+    J --> I
 
-    C --> J
-    F --> K
+    D --> K
+    G --> L
 `} />
 
 ## Screenshots
