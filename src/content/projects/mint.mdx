@@ -1,25 +1,31 @@
 ---
 title: "Mint"
-subtitle: "Event-Driven Wallet Microservices"
+subtitle: "Polyglot Fintech Microservices Platform"
 components: true
-description: "Production-ready, event-driven microservices wallet system featuring secure authentication, real-time transaction processing, and automated notifications."
+description: "Production-style fintech platform with authentication, wallet payments, KYC, fraud detection, analytics, social features, webhooks, an admin console, and a tamper-proof audit log - all connected through gRPC and Kafka."
 tech:
-  - { name: "Node.js", color: "#8CC84B" }
+  - { name: "NestJS", color: "#E0234E" }
+  - { name: "FastAPI", color: "#009688" }
+  - { name: "Next.js", color: "#ffffff" }
   - { name: "TypeScript", color: "#3178C6" }
-  - { name: "Express", color: "#ffffff" }
-  - { name: "MongoDB", color: "#47A248" }
-  - { name: "RabbitMQ", color: "#FF6600" }
+  - { name: "Python", color: "#3776AB" }
+  - { name: "PostgreSQL", color: "#4169E1" }
+  - { name: "Apache Kafka", color: "#231F20" }
   - { name: "Redis", color: "#DC382D" }
+  - { name: "gRPC", color: "#4285F4" }
   - { name: "Docker", color: "#2496ED" }
   - { name: "NGINX", color: "#009639" }
-  - { name: "Prometheus", color: "#E6522C" }
+  - { name: "OpenTelemetry", color: "#425CC7" }
   - { name: "Grafana", color: "#F46800" }
+  - { name: "MinIO", color: "#C72E49" }
 github: "https://github.com/sreekarnv/mint"
-docs: "https://sreekarnv.github.io/mint/"
 screenshots:
-  - "https://raw.githubusercontent.com/sreekarnv/mint/main/docs/assets/dashboard.png"
-  - "https://raw.githubusercontent.com/sreekarnv/mint/main/docs/assets/grafana-dashboard.png"
-  - "https://raw.githubusercontent.com/sreekarnv/mint/main/docs/assets/loki-logs.png"
+  - "https://raw.githubusercontent.com/sreekarnv/mint/main/.github/assets/dashboard-user.png"
+  - "https://raw.githubusercontent.com/sreekarnv/mint/main/.github/assets/analytics-user.png"
+  - "https://raw.githubusercontent.com/sreekarnv/mint/main/.github/assets/notifications-user.png"
+  - "https://raw.githubusercontent.com/sreekarnv/mint/main/.github/assets/kyc-verification-user.png"
+  - "https://raw.githubusercontent.com/sreekarnv/mint/main/.github/assets/kyc-verification-admin.png"
+  - "https://raw.githubusercontent.com/sreekarnv/mint/main/.github/assets/grafana-traces.png"
 gradient: "radial-gradient(circle at 30% 70%, rgba(34, 197, 94, 0.25) 0%, transparent 50%), radial-gradient(circle at 70% 30%, rgba(99, 102, 241, 0.2) 0%, transparent 50%)"
 featured: true
 order: 1
@@ -27,130 +33,127 @@ order: 1
 
 import Mermaid from '~/components/ui/Mermaid.astro';
 
-Mint demonstrates modern architectural patterns including JWT authentication, distributed transactions, message queuing, and API gateway design.
+Mint is a full-stack fintech platform built across 12 independently deployable services. It covers the full lifecycle of a digital wallet - from identity verification and fraud scoring to social payments, budget analytics, and a tamper-proof audit log - all wired together through synchronous gRPC and asynchronous Kafka.
 
 ## Overview
 
-Mint is a production-grade microservices wallet system designed to handle real-world financial transactions with reliability and scalability. The system showcases best practices in distributed systems architecture, including event-driven communication, service isolation, and comprehensive observability.
+The platform is polyglot by design: auth and wallet are FastAPI (Python), everything else is NestJS (TypeScript), and the frontend is Next.js 15. Services communicate synchronously over gRPC when a result is needed before proceeding (fraud scoring, KYC limit checks, wallet settlement), and asynchronously over Kafka for fan-out side effects (notifications, analytics, audit logging, webhooks). Every service has its own isolated PostgreSQL database.
 
 ## Key Features
 
-### Security
-- **JWT (RS256) with JWKS** - Industry-standard token authentication with key rotation support
-- **Argon2 Password Hashing** - Memory-hard hashing algorithm resistant to GPU attacks
-- **HTTP-only Cookies** - Secure token storage preventing XSS attacks
+### Authentication & Identity
+- **JWT (RS256) with JWKS** - Auth service signs tokens with an RSA private key; all other services verify locally against the public JWKS endpoint, no round-trips required
+- **KYC Tiers** - Users progress through UNVERIFIED -> BASIC -> VERIFIED; each tier unlocks higher per-transaction and monthly spend limits
+- **Document Upload** - KYC submissions are stored in MinIO (S3-compatible); admins review and approve/reject via a dedicated queue
+- **Admin Role** - Separate JWT claim gates the admin console; admin service enforces it on every request
 
-### Wallet Operations
-- **Event-Driven Creation** - Wallets are created asynchronously upon user registration
-- **Real-Time Balance Updates** - Immediate reflection of transactions
-- **Complete Transaction History** - Audit trail for all operations
+### Transaction Engine
+- **Fraud Scoring** - Every transaction calls the fraud service via gRPC before settlement. Returns ALLOW / REVIEW / BLOCK with a 0-100 score and the rules that fired
+- **KYC Limit Enforcement** - Transactions service calls KYC service via gRPC to check per-transaction and daily/monthly limits before debiting
+- **Atomic Settlement** - Wallet debit and credit happen over gRPC; both must succeed or the transaction fails
+- **State Machine** - PENDING -> PROCESSING -> COMPLETED / FAILED / CANCELLED / REVERSED
+- **Idempotency** - `Idempotency-Key` header; responses cached in Redis for 24 hours so retries are safe
 
-### Transaction Processing
-- **State Machine** - Transactions flow through PENDING → COMPLETED/FAILED
-- **Top-ups and Transfers** - Support for both inbound and peer-to-peer transfers
-- **Idempotency** - Safe retry handling for failed operations
+### Social Payments
+- **Money Requests** - Request funds from contacts with a 7-day expiry (BullMQ scheduled job). Accepting a request automatically triggers a transfer via Kafka -> transactions service
+- **Bill Splits** - Create a split, assign per-participant amounts, track individual payments
+- **Contacts** - Managed contact list scoped per user
 
-### Smart Notifications
-- **Automated Email Alerts** - Signup confirmations and transaction receipts
-- **RabbitMQ Integration** - Reliable message delivery with retry logic
-- **Template System** - Customizable notification templates
+### Analytics & Budgets
+- **Spend Categorisation** - Completed transactions are auto-classified into FOOD, TRANSPORT, ENTERTAINMENT, UTILITIES, OTHER by merchant name and description matching
+- **Monthly Aggregates** - Category totals and top merchants updated in real-time from Kafka events
+- **Budget Alerts** - Users set per-category budgets; the analytics service publishes a Kafka event when a threshold is crossed, triggering a notification
 
-### Performance & Caching
-- **Redis Caching** - 80-90% cache hit rates for frequently accessed data
-- **Connection Pooling** - Efficient database connection management
-- **Query Optimization** - Indexed queries for fast lookups
+### Notifications & Webhooks
+- **Real-Time SSE** - In-app notification stream over Server-Sent Events; nginx disables proxy buffering so events land immediately
+- **Persistent Feed** - Notifications stored in DB, readable as a paginated list with read/unread state
+- **User Webhooks** - Users register HTTPS endpoints and subscribe to event types; payloads are HMAC-signed, delivered with exponential backoff retry via BullMQ
+
+### Admin Console
+- **User Management** - Search, freeze/unfreeze accounts, update roles
+- **KYC Review Queue** - Inspect submitted documents, approve or reject (emits Kafka event -> KYC service updates tier)
+- **Fraud Review Queue** - Review REVIEW-scored transactions, approve or block
+- **Transaction Operations** - List, reverse, or force-complete stuck transactions
+- **Global Limits** - Configure platform-wide transaction limits without a deployment
+
+### Audit Log
+- **Immutable by Design** - PostgreSQL trigger prevents UPDATE and DELETE on the audit table; every service publishes to `audit.events`
+- **Full Traceability** - Each entry preserves the OpenTelemetry trace ID so any log entry can be correlated back to the original distributed trace in Grafana
 
 ### Observability
-- **Prometheus Metrics** - Custom metrics for business and technical KPIs
-- **Grafana Dashboards** - Real-time visualization of system health
-- **Loki Log Aggregation** - Centralized logging with search capabilities
-- **Distributed Tracing** - Request correlation across services
-
-### Testing
-- **112 Comprehensive Tests** - Unit, integration, and consumer contract tests
-- **MongoDB Memory Server** - Fast, isolated database testing
-- **Supertest** - HTTP assertion library for API testing
+- **Distributed Tracing** - Every service ships OTLP traces to a local collector -> Grafana Tempo. A single top-up produces one trace spanning fraud scoring, KYC checks, wallet settlement, and all Kafka consumers
+- **Trace Propagation** - W3C Trace Context over HTTP, gRPC metadata for gRPC calls, custom `KafkaTraceInterceptor` writes/reads trace headers on Kafka messages so async boundaries don't break the trace
 
 ## Architecture
 
-The system follows a microservices architecture with four independent services communicating asynchronously through RabbitMQ:
-
 <Mermaid chart={`
-flowchart TB
-    subgraph Client
-        A[Web/Mobile App]
-    end
+graph TD
+    Client -->|HTTP| nginx
 
-    subgraph Gateway
-        B[NGINX API Gateway]
-    end
+    nginx -->|/| web
+    nginx -->|/app-admin| web
+    nginx -->|/api/v1/auth| auth
+    nginx -->|/api/v1/wallet| wallet
+    nginx -->|/api/v1/transactions| transactions
+    nginx -->|/api/v1/kyc| kyc
+    nginx -->|/api/v1/analytics| analytics
+    nginx -->|/api/v1/notifications SSE| notifications
+    nginx -->|/api/v1/social| social
+    nginx -->|/api/v1/webhooks| webhook
+    nginx -->|/admin| admin
 
-    subgraph Services
-        C[Auth Service\n:4001]
-        D[Wallet Service\n:4003]
-        E[Transactions Service\n:4004]
-        F[Notifications Service\n:4002]
-    end
+    transactions -->|gRPC :50052| fraud
+    transactions -->|gRPC :50053| kyc
+    transactions -->|gRPC :50051| wallet
 
-    subgraph MessageBroker
-        G[(RabbitMQ)]
-    end
-
-    subgraph DataStores
-        H[(MongoDB\nAuth DB)]
-        I[(MongoDB\nWallet DB)]
-        J[(MongoDB\nTxn DB)]
-        K[(Redis\nCache)]
-    end
-
-    subgraph Observability
-        L[Prometheus]
-        M[Grafana]
-        N[Loki]
-    end
-
-    A --> B
-    B --> C
-    B --> D
-    B --> E
-
-    C --> H
-    C --> K
-    C -.->|events| G
-
-    D --> I
-    D --> K
-    G -.->|consume| D
-
-    E --> J
-    E -.->|events| G
-    G -.->|consume| E
-
-    G -.->|consume| F
-
-    C --> L
-    D --> L
-    E --> L
-    F --> L
-    L --> M
-    N --> M
+    admin -->|gRPC :50053| kyc
+    admin -->|gRPC :50051| wallet
+    admin -->|gRPC :50052| fraud
 `} />
 
-### Service Responsibilities
+### Communication Patterns
 
-| Service | Port | Responsibility |
-|---------|------|----------------|
-| **Auth** | 4001 | User authentication, JWT management, session handling |
-| **Wallet** | 4003 | Balance management, wallet creation, event consumption |
-| **Transactions** | 4004 | Payment processing, transfers, state management |
-| **Notifications** | 4002 | Email delivery, notification templates, event handlers |
+Mint uses two distinct internal communication patterns depending on whether the caller needs a synchronous result.
 
-### Design Principles
+**Synchronous - gRPC** is used when the caller must have a result before continuing:
 
-- **Database per Service** - Each service owns its data, ensuring loose coupling
-- **Event Sourcing** - Critical operations publish events for audit and replay
-- **API Gateway** - NGINX handles routing, rate limiting, and load balancing
-- **Circuit Breaker** - Graceful degradation when downstream services fail
+| Caller | Target | Purpose |
+|--------|--------|---------|
+| transactions | fraud | Score every transaction before settlement |
+| transactions | kyc | Check per-transaction and daily/monthly limits |
+| transactions | wallet | Debit sender, credit recipient atomically |
+| admin | kyc | Fetch KYC profiles and pending review queue |
+| admin | wallet | Fetch wallet status for user management |
+| admin | fraud | Fetch and action fraud cases |
+
+**Asynchronous - Kafka** is used for fan-out side effects where the producer doesn't need to wait:
+
+| Topic | Key Consumers |
+|-------|---------------|
+| `auth.events` | wallet (create), kyc (create profile), notifications, audit |
+| `transaction.events` | analytics, notifications, webhook, audit |
+| `wallet.events` | notifications, webhook, audit |
+| `kyc.events` | notifications, audit |
+| `social.events` | transactions (auto-transfer on accept), notifications, audit |
+| `analytics.events` | notifications (budget alerts), webhook |
+| `admin.events` | kyc (approve/reject tier), audit |
+
+### Services
+
+| Service | Stack | Port | Description |
+|---------|-------|------|-------------|
+| web | Next.js 15 | 3000 | User app and admin console |
+| auth | FastAPI | 4001 | JWT issuance, refresh, RBAC |
+| wallet | FastAPI + gRPC | 4002 / 50051 | Balance management, atomic settlement |
+| transactions | NestJS | 4003 | Transfers, top-ups, idempotency |
+| fraud | NestJS (gRPC only) | 50052 | Real-time rules-based fraud scoring |
+| kyc | NestJS + gRPC | 4004 / 50053 | Document upload, tier management |
+| analytics | NestJS | 4005 | Spend insights, category budgets |
+| notifications | NestJS | 4006 | Persistent notifications + SSE stream |
+| social | NestJS | 4007 | Contacts, money requests, bill splits |
+| webhook | NestJS | 4008 | User-registered webhooks + delivery log |
+| admin | NestJS | 4009 | Admin console API |
+| audit | NestJS | 4010 | Immutable append-only audit log |
 
 ## Getting Started
 
@@ -159,21 +162,27 @@ flowchart TB
 git clone https://github.com/sreekarnv/mint.git
 cd mint
 
-# Start all services with Docker
-docker-compose up -d
+# Generate RSA keys (first time only)
+sh scripts/generate-keys.sh
 
-# Access the services
-# API Gateway: http://localhost:8080
-# RabbitMQ Management: http://localhost:15672
-# Grafana: http://localhost:3000
-# Prometheus: http://localhost:9090
+# Start all services
+docker compose -f docker-compose.dev.yml up -d --build
+
+# Create an admin user
+docker exec -it mint-auth uv run python /app/apps/auth/src/create_admin.py \
+  --email admin@mint.dev \
+  --password adminpass \
+  --name "Admin User"
 ```
+
+The user app is at **http://localhost** and the admin console at **http://localhost/app-admin**. Grafana traces are at **http://localhost:4000**.
 
 ## What I Learned
 
-Building Mint taught me valuable lessons in distributed systems:
+Building Mint at this scale forced me to confront the real costs of distributed systems:
 
-- **Event-driven architecture** requires careful consideration of eventual consistency
-- **Observability is not optional** - you can't fix what you can't see
-- **Testing microservices** requires a different approach than monoliths
-- **Docker Compose** is powerful for local development but has limitations at scale
+- **Two communication protocols serve different needs** - gRPC for synchronous calls where you need a result (fraud scoring, limit checks, settlement) and Kafka for async fan-out where you don't. Conflating them leads to either tight coupling or unnecessary latency
+- **Polyglot is genuinely useful, but the integration surface is the hard part** - Python services handle the stateful, mutation-heavy wallet and auth work well, but wiring gRPC stubs, shared proto definitions, and trace propagation across runtimes requires discipline
+- **Observability must be designed in, not bolted on** - Getting a single trace to span HTTP -> gRPC -> Kafka required explicit propagation at every boundary. Without it, async failures are nearly impossible to debug in production
+- **Idempotency is not optional in financial systems** - Network retries are guaranteed to happen; building safe retry handling from the start saved considerable pain later
+- **The audit log is the source of truth** - Having an immutable, append-only log that every service writes to independently made debugging event ordering issues far easier than reading application logs
