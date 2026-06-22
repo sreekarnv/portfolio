@@ -1,7 +1,6 @@
 ---
 title: "Mint"
 subtitle: "Polyglot Fintech Microservices Platform"
-components: true
 description: "Production-style fintech platform with authentication, wallet payments, KYC, fraud detection, analytics, social features, webhooks, an admin console, and a tamper-proof audit log - all connected through gRPC and Kafka."
 tech:
   - { name: "NestJS", color: "#E0234E" }
@@ -26,12 +25,8 @@ screenshots:
   - "https://raw.githubusercontent.com/sreekarnv/mint/main/.github/assets/kyc-verification-user.png"
   - "https://raw.githubusercontent.com/sreekarnv/mint/main/.github/assets/kyc-verification-admin.png"
   - "https://raw.githubusercontent.com/sreekarnv/mint/main/.github/assets/grafana-traces.png"
-gradient: "radial-gradient(circle at 30% 70%, rgba(34, 197, 94, 0.25) 0%, transparent 50%), radial-gradient(circle at 70% 30%, rgba(99, 102, 241, 0.2) 0%, transparent 50%)"
-featured: true
 order: 1
 ---
-
-import Mermaid from '~/components/ui/Mermaid.astro';
 
 Mint is a full-stack fintech platform built across 12 independently deployable services. It covers the full lifecycle of a digital wallet - from identity verification and fraud scoring to social payments, budget analytics, and a tamper-proof audit log - all wired together through synchronous gRPC and asynchronous Kafka.
 
@@ -86,30 +81,7 @@ The platform is polyglot by design: auth and wallet are FastAPI (Python), everyt
 
 ## Architecture
 
-<Mermaid chart={`
-graph TD
-    Client -->|HTTP| nginx
-
-    nginx -->|/| web
-    nginx -->|/app-admin| web
-    nginx -->|/api/v1/auth| auth
-    nginx -->|/api/v1/wallet| wallet
-    nginx -->|/api/v1/transactions| transactions
-    nginx -->|/api/v1/kyc| kyc
-    nginx -->|/api/v1/analytics| analytics
-    nginx -->|/api/v1/notifications SSE| notifications
-    nginx -->|/api/v1/social| social
-    nginx -->|/api/v1/webhooks| webhook
-    nginx -->|/admin| admin
-
-    transactions -->|gRPC :50052| fraud
-    transactions -->|gRPC :50053| kyc
-    transactions -->|gRPC :50051| wallet
-
-    admin -->|gRPC :50053| kyc
-    admin -->|gRPC :50051| wallet
-    admin -->|gRPC :50052| fraud
-`} />
+The platform is fronted by a single NGINX reverse proxy that routes HTTP traffic to the Next.js web app and to each of the API services. The transactions service and the admin service also reach the fraud, KYC, and wallet services over gRPC for synchronous lookups before settling a payment or rendering an admin view.
 
 ### Communication Patterns
 

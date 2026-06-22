@@ -16,7 +16,7 @@ const projectsCollection = defineCollection({
     liveDemo: z.string().url().optional(),
     docs: z.string().url().optional(),
     screenshots: z.array(z.string()).optional(),
-    gradient: z.string(),
+    gradient: z.string().optional(),
     featured: z.boolean().optional(),
     order: z.number().optional(),
   }),

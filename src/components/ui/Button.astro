@@ -3,7 +3,6 @@ import { Icon } from "astro-icon/components";
 
 interface Props {
   href?: string;
-  variant?: "primary" | "secondary" | "outline";
   icon?: string;
   external?: boolean;
   class?: string;
@@ -12,7 +11,6 @@ interface Props {
 
 const {
   href,
-  variant = "primary",
   icon,
   external = false,
   class: className,
@@ -20,84 +18,44 @@ const {
 } = Astro.props;
 
 const Element = href ? "a" : "button";
-const externalProps = external ? { target: "_blank", rel: "noopener noreferrer" } : {};
+const externalProps = external
+  ? { target: "_blank", rel: "noopener noreferrer" }
+  : {};
 ---
 
 <Element
   href={href}
-  class:list={["btn", `btn--${variant}`, className]}
-  data-magnetic
+  class:list={["link", className]}
   {...externalProps}
   {...rest}
 >
-  <span class="btn__text">
+  <span class="link__text">
     <slot />
   </span>
-  {icon && <Icon name={icon} class="btn__icon" size={20} />}
+  {icon && <Icon name={icon} class="link__icon" size={18} />}
 </Element>
 
 <style lang="scss">
-  .btn {
+  .link {
     display: inline-flex;
     align-items: center;
-    justify-content: center;
     gap: var(--space-sm);
-    padding: var(--space-md) var(--space-xl);
-    font-size: var(--text-sm);
-    font-weight: 600;
-    border-radius: var(--radius-full);
-    transition: all var(--duration-normal) var(--ease-out-quart);
-    position: relative;
-    overflow: hidden;
-
-    &__text {
-      position: relative;
-      z-index: 1;
-    }
+    color: var(--color-text);
+    font-size: var(--text-base);
+    border-bottom: 1px solid var(--color-text);
+    padding-bottom: 4px;
+    cursor: pointer;
+    transition: gap var(--duration-fast) var(--ease-out-quart);
 
     &__icon {
-      position: relative;
-      z-index: 1;
-      transition: transform var(--duration-normal) var(--ease-out-quart);
+      transition: transform var(--duration-fast) var(--ease-out-quart);
     }
 
-    &--primary {
-      background: var(--color-text);
-      color: var(--color-primary);
+    &:hover {
+      gap: var(--space-md);
 
-      &:hover {
-        transform: translateY(-2px);
-        box-shadow: var(--shadow-glow);
-
-        .btn__icon {
-          transform: translate(3px, -3px);
-        }
-      }
-    }
-
-    &--secondary {
-      background: transparent;
-      border: 1px solid var(--color-border);
-      color: var(--color-text);
-
-      &:hover {
-        border-color: var(--color-text);
-        background: rgba(var(--color-white), 0.05);
-      }
-    }
-
-    &--outline {
-      background: transparent;
-      border: 1px solid var(--color-border);
-      color: var(--color-text);
-
-      &:hover {
-        border-color: var(--color-accent);
-        color: var(--color-accent);
-
-        .btn__icon {
-          transform: translate(3px, -3px);
-        }
+      .link__icon {
+        transform: translate(2px, -2px);
       }
     }
   }

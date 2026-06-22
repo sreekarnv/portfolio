@@ -1,7 +1,6 @@
 ---
 title: "Burger House"
 subtitle: "E-Commerce Platform"
-components: true
 description: "Full-stack e-commerce platform for fast-food ordering with custom burger builder, real-time delivery tracking, and admin dashboard."
 tech:
   - { name: "Next.js", color: "#000000" }
@@ -21,11 +20,8 @@ screenshots:
   - "https://raw.githubusercontent.com/sreekarnv/burger-house/master/assets/make-2.png"
   - "https://raw.githubusercontent.com/sreekarnv/burger-house/master/assets/customer-dashboard-1.png"
   - "https://raw.githubusercontent.com/sreekarnv/burger-house/master/assets/admin-dashboard-1.png"
-gradient: "radial-gradient(circle at 30% 70%, rgba(249, 115, 22, 0.25) 0%, transparent 50%), radial-gradient(circle at 70% 30%, rgba(236, 72, 153, 0.2) 0%, transparent 50%)"
 order: 4
 ---
-
-import Mermaid from '~/components/ui/Mermaid.astro';
 
 Burger House enables customers to browse a curated menu or construct personalized burgers by selecting specific ingredients, with real-time order tracking and a comprehensive admin dashboard.
 
@@ -80,49 +76,12 @@ Burger House is a full-featured e-commerce platform that demonstrates modern web
 
 ## Architecture
 
-<Mermaid chart={`
-flowchart TB
-    subgraph Client["Client Layer"]
-        A[Next.js Pages]
-        B[Redux Store]
-        C[tRPC Client]
-        D[React Components]
-    end
+The application is split into four layers:
 
-    subgraph API["API Layer"]
-        E[tRPC Router]
-        F[Auth Procedures]
-        G[Order Procedures]
-        H[Product Procedures]
-    end
-
-    subgraph Data["Data Layer"]
-        I[(MongoDB)]
-        J[Mongoose ODM]
-    end
-
-    subgraph External["External Services"]
-        K[Cloudinary\nImages]
-        L[MapBox\nTracking]
-    end
-
-    A --> B
-    A --> D
-    A --> C
-    C --> E
-
-    E --> F
-    E --> G
-    E --> H
-
-    F --> J
-    G --> J
-    H --> J
-    J --> I
-
-    D --> K
-    G --> L
-`} />
+- **Client Layer** - Next.js pages, Redux store, tRPC client, React components
+- **API Layer** - tRPC router with auth, order, and product procedures
+- **Data Layer** - MongoDB accessed through Mongoose ODM
+- **External Services** - Cloudinary for image hosting, MapBox for delivery tracking
 
 ## Screenshots
 

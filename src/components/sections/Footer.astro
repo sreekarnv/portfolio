@@ -10,11 +10,8 @@ const footerLinks = [
 
 <footer class="footer">
   <div class="footer__container">
-    <div class="footer__content">
-      <div class="footer__brand">
-        <span class="footer__logo">SN</span>
-        <p class="footer__tagline">Building the future, one line at a time.</p>
-      </div>
+    <div class="footer__row">
+      <p class="footer__copy">&copy; {currentYear} Sreekar Nutulapati</p>
       <nav class="footer__links">
         {
           footerLinks.map((link) => (
@@ -29,17 +26,13 @@ const footerLinks = [
         }
       </nav>
     </div>
-    <div class="footer__bottom">
-      <p>&copy; {currentYear} Sreekar Nutulapati. Crafted with passion.</p>
-    </div>
   </div>
 </footer>
 
 <style lang="scss">
   .footer {
-    background: var(--color-primary);
-    padding: var(--space-3xl) 0;
-    border-top: 1px solid var(--color-border);
+    padding: var(--space-2xl) 0;
+    border-top: 1px solid var(--color-divider);
 
     &__container {
       width: 100%;
@@ -48,57 +41,31 @@ const footerLinks = [
       padding: 0 var(--container-padding);
     }
 
-    &__content {
+    &__row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: var(--space-xl);
-
-      @media (max-width: 768px) {
-        flex-direction: column;
-        gap: var(--space-xl);
-        text-align: center;
-      }
+      flex-wrap: wrap;
+      gap: var(--space-md);
     }
 
-    &__logo {
-      font-size: var(--text-2xl);
-      font-weight: 700;
-      background: var(--gradient-accent);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    &__tagline {
-      color: var(--color-text-muted);
+    &__copy {
       font-size: var(--text-sm);
-      margin-top: var(--space-sm);
+      color: var(--color-text-muted);
     }
 
     &__links {
       display: flex;
-      gap: var(--space-xl);
+      gap: var(--space-lg);
 
       a {
-        color: var(--color-text-secondary);
         font-size: var(--text-sm);
+        color: var(--color-text-secondary);
         transition: color var(--duration-fast) ease;
 
         &:hover {
-          color: var(--color-accent);
+          color: var(--color-text);
         }
-      }
-    }
-
-    &__bottom {
-      text-align: center;
-      padding-top: var(--space-xl);
-      border-top: 1px solid var(--color-border);
-
-      p {
-        color: var(--color-text-muted);
-        font-size: var(--text-sm);
       }
     }
   }

@@ -1,7 +1,6 @@
 ---
 import { getCollection } from "astro:content";
 import { Icon } from "astro-icon/components";
-import Button from "~/components/ui/Button.astro";
 
 const projectEntries = await getCollection("projects");
 const projects = projectEntries
@@ -12,68 +11,65 @@ const projects = projectEntries
 <section class="projects" id="projects">
   <div class="projects__container">
     <header class="projects__header">
-      <span class="projects__tag" data-reveal>03</span>
-      <h2 class="projects__title" data-reveal>Featured Projects</h2>
+      <span class="projects__tag">03 &mdash; Projects</span>
+      <h2 class="projects__title">Selected work.</h2>
     </header>
 
-    <div class="projects__grid">
+    <ol class="projects__list">
       {
-        projects.map((project) => (
-          <a
-            href={`/projects/${project.slug}`}
-            class:list={[
-              "projects__card",
-              { "projects__card--featured": project.featured },
-            ]}
-            data-reveal
-          >
-            <div
-              class="projects__image"
-              style={`--project-gradient: ${project.gradient}`}
-            >
-              <div class="projects__badges">
-                {project.tech.slice(0, 4).map((t) => (
-                  <span
-                    class="projects__badge"
-                    style={`--badge-color: ${t.color}`}
-                  >
-                    {t.name}
-                  </span>
-                ))}
-              </div>
-            </div>
-            <div class="projects__content">
-              <h3 class="projects__card-title">{project.title}</h3>
-              <p class="projects__subtitle">{project.subtitle}</p>
-              <p class="projects__description">{project.description}</p>
-              <div class="projects__links">
-                <span class="projects__link">
-                  <span>View Details</span>
-                  <Icon name="lucide:arrow-right" size={16} />
+        projects.map((project, index) => {
+          const number = String(index + 1).padStart(2, "0");
+          const tech = project.tech.map((t) => t.name);
+          const visible = tech.slice(0, 5);
+          const extra = tech.length - visible.length;
+          return (
+            <li class="projects__item">
+              <a
+                href={`/projects/${project.slug}`}
+                class="projects__link"
+              >
+                <span class="projects__index">{number}</span>
+                <div class="projects__body">
+                  <h3 class="projects__name">{project.title}</h3>
+                  <p class="projects__subtitle">{project.subtitle}</p>
+                  <p class="projects__tech">
+                    {visible.join(" · ")}
+                    {extra > 0 && (
+                      <span class="projects__tech-more">
+                        {" "}
+                        +{extra} more
+                      </span>
+                    )}
+                  </p>
+                </div>
+                <span class="projects__arrow" aria-hidden="true">
+                  <Icon name="lucide:arrow-up-right" size={20} />
                 </span>
-              </div>
-            </div>
-          </a>
-        ))
+              </a>
+            </li>
+          );
+        })
       }
-    </div>
+    </ol>
 
-    <div class="projects__cta" data-reveal>
-      <Button
+    <div class="projects__footer">
+      <a
         href="https://github.com/sreekarnv"
-        variant="outline"
-        icon="lucide:arrow-up-right"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="projects__github"
       >
-        View All Projects on GitHub
-      </Button>
+        View all on GitHub
+        <Icon name="lucide:arrow-up-right" size={18} />
+      </a>
     </div>
   </div>
 </section>
 
 <style lang="scss">
   .projects {
-    padding: var(--space-5xl) 0;
-    background: var(--color-secondary);
+    padding: var(--space-4xl) 0;
+    border-top: 1px solid var(--color-divider);
 
     &__container {
       width: 100%;
@@ -83,173 +79,129 @@ const projects = projectEntries
     }
 
     &__header {
-      margin-bottom: var(--space-4xl);
+      margin-bottom: var(--space-3xl);
     }
 
     &__tag {
       display: inline-block;
       font-family: var(--font-mono);
-      font-size: var(--text-sm);
-      color: var(--color-accent);
-      margin-bottom: var(--space-md);
+      font-size: var(--text-xs);
+      color: var(--color-text-muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: var(--space-lg);
     }
 
     &__title {
       font-size: var(--text-4xl);
-      font-weight: 700;
+      font-weight: 600;
       letter-spacing: -0.02em;
+      line-height: 1.1;
     }
 
-    &__grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: var(--space-xl);
-
-      @media (max-width: 968px) {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    &__card {
-      background: var(--color-surface);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-xl);
-      overflow: hidden;
-      transition: all var(--duration-slow) var(--ease-out-quart);
-
-      &:hover {
-        border-color: var(--color-border-hover);
-        transform: translateY(-5px);
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-
-        .projects__image::before {
-          opacity: 0.4;
-        }
-
-        .projects__badge {
-          transform: translateY(-2px);
-        }
-      }
-
-      &--featured {
-        grid-column: span 2;
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-
-        @media (max-width: 968px) {
-          grid-column: span 1;
-          grid-template-columns: 1fr;
-        }
-
-        .projects__image {
-          aspect-ratio: auto;
-          min-height: 300px;
-        }
-      }
-    }
-
-    &__image {
-      aspect-ratio: 16/10;
+    &__list {
       display: flex;
       flex-direction: column;
-      align-items: center;
-      justify-content: flex-end;
-      padding-bottom: var(--space-lg);
-      position: relative;
-      overflow: hidden;
-      background: linear-gradient(
-        135deg,
-        var(--color-tertiary) 0%,
-        var(--color-surface) 100%
-      );
+    }
 
-      &::before {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background: var(--project-gradient),
-          linear-gradient(to top, var(--color-surface) 0%, transparent 50%);
-        opacity: 0.8;
-        transition: opacity var(--duration-slow) var(--ease-out-quart);
+    &__item {
+      border-top: 1px solid var(--color-divider);
+
+      &:last-child {
+        border-bottom: 1px solid var(--color-divider);
       }
-    }
-
-    &__badges {
-      display: flex;
-      gap: var(--space-sm);
-      flex-wrap: wrap;
-      justify-content: center;
-      padding: 0 var(--space-md);
-      position: relative;
-      z-index: 2;
-    }
-
-    &__badge {
-      padding: var(--space-xs) var(--space-sm);
-      font-size: 10px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      border-radius: var(--radius-sm);
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      color: var(--badge-color, var(--color-text-secondary));
-      transition: all var(--duration-fast) ease;
-    }
-
-    &__content {
-      padding: var(--space-xl);
-    }
-
-    &__card-title {
-      font-size: var(--text-2xl);
-      font-weight: 600;
-      margin-bottom: var(--space-xs);
-    }
-
-    &__subtitle {
-      font-size: var(--text-sm);
-      color: var(--color-accent-light);
-      margin-bottom: var(--space-md);
-    }
-
-    &__description {
-      color: var(--color-text-secondary);
-      font-size: var(--text-sm);
-      margin-bottom: var(--space-lg);
-    }
-
-    &__links {
-      display: flex;
-      gap: var(--space-md);
     }
 
     &__link {
-      display: inline-flex;
+      display: grid;
+      grid-template-columns: 4rem 1fr 2rem;
       align-items: center;
-      gap: var(--space-sm);
-      font-size: var(--text-sm);
-      font-weight: 500;
+      gap: var(--space-lg);
+      padding: var(--space-lg) 0;
       color: var(--color-text);
-      transition: color var(--duration-fast) ease;
 
-      &:hover {
-        color: var(--color-accent);
-
-        svg {
-          transform: translate(2px, -2px);
-        }
+      @media (max-width: 768px) {
+        grid-template-columns: 3rem 1fr 2rem;
+        row-gap: var(--space-sm);
       }
 
-      svg {
-        transition: transform var(--duration-fast) ease;
+      &:hover {
+        .projects__name {
+          text-decoration: underline;
+          text-underline-offset: 4px;
+        }
+
+        .projects__arrow svg {
+          transform: translate(3px, -3px);
+        }
       }
     }
 
-    &__cta {
-      display: flex;
-      justify-content: center;
-      margin-top: var(--space-3xl);
+    &__index {
+      font-family: var(--font-mono);
+      font-size: var(--text-sm);
+      color: var(--color-text-muted);
+      letter-spacing: 0.05em;
+    }
+
+    &__body {
+      min-width: 0;
+    }
+
+    &__name {
+      font-size: var(--text-2xl);
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      margin-bottom: var(--space-xs);
+      transition: color var(--duration-fast) ease;
+    }
+
+    &__subtitle {
+      color: var(--color-text-secondary);
+      font-size: var(--text-sm);
+    }
+
+    &__tech {
+      margin-top: var(--space-sm);
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--color-text-muted);
+      letter-spacing: 0.02em;
+      line-height: 1.6;
+    }
+
+    &__tech-more {
+      color: var(--color-text-muted);
+      opacity: 0.7;
+    }
+
+    &__arrow {
+      color: var(--color-text);
+      display: inline-flex;
+      justify-content: flex-end;
+
+      svg {
+        transition: transform var(--duration-fast) var(--ease-out-quart);
+      }
+    }
+
+    &__footer {
+      margin-top: var(--space-2xl);
+    }
+
+    &__github {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-sm);
+      color: var(--color-text-secondary);
+      font-size: var(--text-sm);
+      border-bottom: 1px solid var(--color-divider);
+      padding-bottom: 4px;
+      transition: color var(--duration-fast) ease;
+
+      &:hover {
+        color: var(--color-text);
+      }
     }
   }
 </style>

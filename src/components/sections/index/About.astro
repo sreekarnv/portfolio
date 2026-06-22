@@ -31,55 +31,56 @@ const skillCategories: SkillCategory[] = [
 <section class="about" id="about">
   <div class="about__container">
     <header class="about__header">
-      <span class="about__tag" data-reveal>01</span>
-      <h2 class="about__title" data-reveal>About Me</h2>
+      <span class="about__tag">01 &mdash; About</span>
+      <h2 class="about__title">A developer who likes the whole stack.</h2>
     </header>
 
     <div class="about__content">
       <div class="about__text">
-        <p class="about__intro" data-reveal>
-          It started with curiosity — <span class="about__highlight"
-            >how do things work under the hood?</span
-          >
-        </p>
-        <p data-reveal>
-          That question led me from tinkering with code at BITS Pilani to
+        <p>
+          I started out curious about how things work under the hood, and that
+          curiosity took me from tinkering with code at BITS Pilani to
           building real-time analytics dashboards at CleverTap, and eventually
           to engineering protocol-level testing systems at KPIT Technologies.
-          Along the way, I discovered I love the entire stack — from the
-          elegance of a well-designed API to the satisfaction of a pixel-perfect
-          interface.
         </p>
-        <p data-reveal>
-          Today, I build with Python, TypeScript, React, Node.js, and whatever
-          else the problem demands. Currently, I'm working on <span
-            class="about__highlight">FastAuth</span
-          > — a production-ready authentication framework for FastAPI. I've shipped
-          microservices, automated testing pipelines, and crafted interfaces that
-          users actually enjoy.
+        <p>
+          I like the entire stack &mdash; the elegance of a well-designed
+          API, the satisfaction of a pixel-perfect interface, and everything
+          in between. Most recently I've been working on
+          <a href="/projects/fastauth" class="about__link">FastAuth</a>,
+          an open-source authentication library for FastAPI, alongside a
+          polyglot fintech platform called
+          <a href="/projects/mint" class="about__link">Mint</a>.
         </p>
-        <p data-reveal>
-          Now I'm looking for my next chapter — a team that values craft, a
+        <p>
+          I'm looking for my next chapter &mdash; a team that values craft, a
           problem worth solving, and the space to do meaningful work.
         </p>
       </div>
 
       <div class="about__skills">
-        <h3 class="about__skills-title" data-reveal>Tech Arsenal</h3>
-        <div class="about__skills-grid">
+        <h3 class="about__skills-title">Skills</h3>
+        <dl class="about__skills-list">
           {
             skillCategories.map((category) => (
-              <div class="about__skill-category" data-reveal>
-                <h4>{category.title}</h4>
-                <div class="about__skill-tags">
-                  {category.skills.map((skill) => (
-                    <span class="about__skill-tag">{skill}</span>
+              <div class="about__skill-row">
+                <dt>{category.title}</dt>
+                <dd>
+                  {category.skills.map((skill, i) => (
+                    <>
+                      <span>{skill}</span>
+                      {i < category.skills.length - 1 && (
+                        <span class="about__skill-sep" aria-hidden="true">
+                          &middot;
+                        </span>
+                      )}
+                    </>
                   ))}
-                </div>
+                </dd>
               </div>
             ))
           }
-        </div>
+        </dl>
       </div>
     </div>
   </div>
@@ -87,8 +88,8 @@ const skillCategories: SkillCategory[] = [
 
 <style lang="scss">
   .about {
-    padding: var(--space-5xl) 0;
-    background: var(--color-secondary);
+    padding: var(--space-4xl) 0;
+    border-top: 1px solid var(--color-divider);
 
     &__container {
       width: 100%;
@@ -98,91 +99,105 @@ const skillCategories: SkillCategory[] = [
     }
 
     &__header {
-      margin-bottom: var(--space-4xl);
+      margin-bottom: var(--space-3xl);
     }
 
     &__tag {
       display: inline-block;
       font-family: var(--font-mono);
-      font-size: var(--text-sm);
-      color: var(--color-accent);
-      margin-bottom: var(--space-md);
+      font-size: var(--text-xs);
+      color: var(--color-text-muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: var(--space-lg);
     }
 
     &__title {
       font-size: var(--text-4xl);
-      font-weight: 700;
+      font-weight: 600;
       letter-spacing: -0.02em;
+      line-height: 1.1;
+      max-width: 18ch;
     }
 
     &__content {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: var(--space-4xl);
+      gap: var(--space-3xl);
 
       @media (max-width: 968px) {
         grid-template-columns: 1fr;
+        gap: var(--space-2xl);
       }
     }
 
-    &__intro {
-      font-size: var(--text-xl);
-      line-height: 1.6;
-      margin-bottom: var(--space-lg);
-    }
-
-    &__text p {
-      color: var(--color-text-secondary);
-      margin-bottom: var(--space-lg);
-    }
-
-    &__highlight {
-      color: var(--color-accent-light);
-      font-weight: 500;
-    }
-
-    &__skills-title {
-      font-size: var(--text-xl);
-      font-weight: 600;
-      margin-bottom: var(--space-xl);
-    }
-
-    &__skills-grid {
-      display: flex;
-      flex-direction: column;
-      gap: var(--space-xl);
-    }
-
-    &__skill-category {
-      h4 {
-        font-size: var(--text-sm);
-        color: var(--color-text-muted);
-        text-transform: uppercase;
-        letter-spacing: 0.1em;
+    &__text {
+      p {
+        color: var(--color-text-secondary);
+        font-size: var(--text-base);
+        line-height: 1.7;
         margin-bottom: var(--space-md);
       }
     }
 
-    &__skill-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: var(--space-sm);
-    }
-
-    &__skill-tag {
-      padding: var(--space-sm) var(--space-md);
-      background: var(--color-surface);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-md);
-      font-size: var(--text-sm);
-      color: var(--color-text-secondary);
-      transition: all var(--duration-fast) ease;
+    &__link {
+      color: var(--color-text);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      text-decoration-thickness: 1px;
+      transition: color var(--duration-fast) ease;
 
       &:hover {
-        border-color: var(--color-accent);
-        color: var(--color-accent-light);
-        background: rgba(var(--color-accent), 0.1);
+        color: var(--color-text-secondary);
       }
+    }
+
+    &__skills-title {
+      font-size: var(--text-sm);
+      font-weight: 500;
+      color: var(--color-text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: var(--space-lg);
+    }
+
+    &__skills-list {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-md);
+    }
+
+    &__skill-row {
+      display: grid;
+      grid-template-columns: 12rem 1fr;
+      gap: var(--space-lg);
+      align-items: baseline;
+      padding-bottom: var(--space-md);
+      border-bottom: 1px solid var(--color-divider);
+
+      @media (max-width: 600px) {
+        grid-template-columns: 1fr;
+        gap: var(--space-xs);
+      }
+
+      dt {
+        font-family: var(--font-mono);
+        font-size: var(--text-xs);
+        color: var(--color-text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      dd {
+        font-size: var(--text-base);
+        color: var(--color-text);
+        line-height: 1.5;
+      }
+    }
+
+    &__skill-sep {
+      color: var(--color-text-muted);
+      margin: 0 var(--space-xs);
     }
   }
 </style>

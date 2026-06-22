@@ -1,6 +1,5 @@
 ---
 import "~/scss/main.scss";
-import Cursor from "~/components/ui/Cursor.astro";
 
 export interface Props {
   title?: string;
@@ -69,7 +68,6 @@ const structuredData = {
         This website requires JavaScript for full functionality. Please enable JavaScript to continue.
       </div>
     </noscript>
-    <Cursor />
     <slot />
     <script>
       import "~/ts/main";

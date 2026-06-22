@@ -3,7 +3,6 @@ const menuLinks = [
   { href: "#about", label: "About" },
   { href: "#experience", label: "Experience" },
   { href: "#projects", label: "Projects" },
-  { href: "#services", label: "Services" },
   { href: "#contact", label: "Contact" },
 ];
 ---
@@ -15,7 +14,7 @@ const menuLinks = [
         <a
           href={link.href}
           class="mobile-menu__link"
-          style={`transition-delay: ${index * 0.05}s`}
+          style={`transition-delay: ${index * 0.04}s`}
         >
           {link.label}
         </a>
@@ -32,13 +31,13 @@ const menuLinks = [
     right: 0;
     bottom: 0;
     background: var(--color-primary);
-    z-index: 999;
+    z-index: 90;
     display: flex;
     align-items: center;
     justify-content: center;
     opacity: 0;
     visibility: hidden;
-    transition: all var(--duration-slow) var(--ease-out-expo);
+    transition: opacity var(--duration-normal) ease, visibility var(--duration-normal) ease;
 
     &--active {
       opacity: 1;
@@ -60,16 +59,10 @@ const menuLinks = [
     &__link {
       font-size: var(--text-3xl);
       font-weight: 600;
+      color: var(--color-text);
       opacity: 0;
-      transform: translateY(20px);
-      transition:
-        opacity var(--duration-normal) ease,
-        transform var(--duration-normal) ease,
-        color var(--duration-fast) ease;
-
-      &:hover {
-        color: var(--color-accent);
-      }
+      transform: translateY(12px);
+      transition: opacity var(--duration-normal) ease, transform var(--duration-normal) ease;
     }
   }
 </style>
