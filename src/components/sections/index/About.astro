@@ -7,23 +7,23 @@ interface SkillCategory {
 const skillCategories: SkillCategory[] = [
   {
     title: "Languages",
-    skills: ["Python", "TypeScript", "JavaScript", "C++", "SQL", "Bash"],
+    skills: ["Python", "TypeScript", "JavaScript", "SQL"],
   },
   {
     title: "Backend",
-    skills: ["Node.js", "Express", "FastAPI", "REST APIs", "Microservices"],
+    skills: ["FastAPI", "SQLAlchemy", "REST APIs"],
   },
   {
-    title: "Frontend",
-    skills: ["React", "Next.js", "SvelteKit", "Vue.js"],
+    title: "Data",
+    skills: ["PostgreSQL", "SQLite", "Alembic"],
   },
   {
-    title: "DevOps & Tools",
-    skills: ["Docker", "Jenkins", "GitLab CI/CD", "NGINX", "Linux"],
+    title: "Infra",
+    skills: ["Docker", "Docker Compose", "Linux", "GitHub Actions", "Jenkins"],
   },
   {
-    title: "Databases",
-    skills: ["MongoDB", "PostgreSQL", "Redis", "RabbitMQ"],
+    title: "Testing & Tooling",
+    skills: ["Pytest", "Ruff", "Git", "OpenTelemetry", "Ollama"],
   },
 ];
 ---
@@ -47,10 +47,10 @@ const skillCategories: SkillCategory[] = [
           I like the entire stack &mdash; the elegance of a well-designed
           API, the satisfaction of a pixel-perfect interface, and everything
           in between. Most recently I've been working on
-          <a href="/projects/fastauth" class="about__link">FastAuth</a>,
-          an open-source authentication library for FastAPI, alongside a
-          polyglot fintech platform called
-          <a href="/projects/mint" class="about__link">Mint</a>.
+          <a href="/projects/authloom" class="about__link">AuthLoom</a>,
+          an open-source authentication package for FastAPI, alongside a
+          local-first AI drafting assistant called
+          <a href="/projects/draftlet" class="about__link">Draftlet</a>.
         </p>
         <p>
           I'm looking for my next chapter &mdash; a team that values craft, a
